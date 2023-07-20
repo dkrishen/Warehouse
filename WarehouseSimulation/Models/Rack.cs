@@ -1,19 +1,20 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace WarehouseSimulation.Models.DatabaseModels
+namespace WarehouseSimulation.Models
 {
     public class Rack
     {
+        [Key]
         public Guid Id { get; set; }
         public Guid TypeId { get; set; }
         public int Size { get; set; }
         public int Number { get; set; }
 
-        public Type Type { get; set; }
+        [ForeignKey(nameof(RackProduct.RackId))]
         public List<RackProduct> RackProducts { get; set; }
     }
 }
