@@ -14,8 +14,8 @@ namespace WarehouseSimulation.Models.DatabaseModels
         public float Cost { get; set; }
 
         public ProductType ProductType { get; set; }
-        public IEnumerable<RackProduct> RackProducts { get; set; }
-        public IEnumerable<DispatchProduct> DispatchProducts { get; set; }
-        public IEnumerable<DeliveryProduct> DeliveryProducts { get; set; }
+        public List<RackProduct> RackProducts { get; set; }
+        public List<DispatchProduct> DispatchProducts { get; set; }
+        public List<DeliveryProduct> DeliveryProducts { get; set; }
     }
 }

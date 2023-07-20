@@ -14,6 +14,6 @@ namespace WarehouseSimulation.Models.DatabaseModels
         public int Number { get; set; }
 
         public Type Type { get; set; }
-        public IEnumerable<RackProduct> RackProducts { get; set; }
+        public List<RackProduct> RackProducts { get; set; }
     }
 }

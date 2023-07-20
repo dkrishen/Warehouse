@@ -11,7 +11,7 @@ namespace WarehouseSimulation.Models.DatabaseModels
         public Guid Id { get; set; }
         public string TypeName { get; set; }
 
-        public IEnumerable<Product> Products { get; set;}
-        public IEnumerable<Rack> Racks { get; set;}
+        public List<Product> Products { get; set;}
+        public List<Rack> Racks { get; set;}
     }
 }

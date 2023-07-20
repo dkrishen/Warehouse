@@ -13,6 +13,6 @@ namespace WarehouseSimulation.Models.DatabaseModels
         public DateOnly CreationDate { get; set; }
         public bool IsActive { get; set; }
 
-        public IEnumerable<DeliveryProduct> DeliveryProducts { get; set; }
+        public List<DeliveryProduct> DeliveryProducts { get; set; }
     }
 }
