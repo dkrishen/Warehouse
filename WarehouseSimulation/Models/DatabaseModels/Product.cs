@@ -15,7 +15,7 @@ namespace WarehouseSimulation.Models.DatabaseModels
 
         public ProductType ProductType { get; set; }
         public IEnumerable<RackProduct> RackProducts { get; set; }
-        //public IEnumerable<Dispatch> Dispatches { get; set; }
-        //public IEnumerable<Delivery> Deliveries { get; set; }
+        public IEnumerable<DispatchProduct> DispatchProducts { get; set; }
+        public IEnumerable<DeliveryProduct> DeliveryProducts { get; set; }
     }
 }
