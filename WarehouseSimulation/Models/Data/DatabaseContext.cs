@@ -55,6 +55,28 @@ namespace WarehouseSimulation.Models.Data
                 .WithMany(r => r.RackProducts)
                 .OnDelete(DeleteBehavior.NoAction);
 
+            modelBuilder
+                .Entity<DeliveryProduct>()
+                .HasOne(rp => rp.Product)
+                .WithMany(p => p.DeliveryProducts)
+                .OnDelete(DeleteBehavior.NoAction);
+            modelBuilder
+                .Entity<DeliveryProduct>()
+                .HasOne(rp => rp.Delivery)
+                .WithMany(d => d.DeliveryProducts)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder
+                .Entity<DispatchProduct>()
+                .HasOne(rp => rp.Product)
+                .WithMany(d => d.DispatchProducts)
+                .OnDelete(DeleteBehavior.NoAction);
+            modelBuilder
+                .Entity<DispatchProduct>()
+                .HasOne(rp => rp.Dispatch)
+                .WithMany(d => d.DispatchProducts)
+                .OnDelete(DeleteBehavior.NoAction);
+
             base.OnModelCreating(modelBuilder);
         }
 
