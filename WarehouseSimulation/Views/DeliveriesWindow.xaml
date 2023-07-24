@@ -1,0 +1,43 @@
+﻿<Window x:Class="WarehouseSimulation.Views.DeliveriesWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WarehouseSimulation.Views"
+        mc:Ignorable="d"
+        Title="DeliveriesWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Button Grid.Column="0" Grid.Row="0" x:Name="AddDeliveryButton" Content="Add Delivery" Style="{StaticResource ButtonTheme}"/>
+        <Button Grid.Column="1" Grid.Row="0" x:Name="AddRackButton" Content="Add Rack" Style="{StaticResource ButtonTheme}"/>
+        <Button Grid.Column="2" Grid.Row="0" x:Name="ReturnButton" Content="Return to main" Style="{StaticResource ButtonTheme}"/>
+
+        <!--<DataGrid Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" >
+            
+        </DataGrid>-->
+        
+        <!--<StackPanel Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" x:Name="ProductListView">
+            
+        </StackPanel>-->
+        
+        <!--<ListView Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" x:Name="ProductListView">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Delivery ID" Width="auto"/>
+                    <GridViewColumn Header="Product name" Width="100"/>
+                    <GridViewColumn Header="Product count" Width="100"/>
+                </GridView>
+            </ListView.View>
+        </ListView>-->
+
+    </Grid>
+</Window>
