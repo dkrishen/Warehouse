@@ -1,14 +1,25 @@
 ﻿<Application x:Class="WarehouseSimulation.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:WarehouseSimulation"
-             StartupUri="Views/ProductWindow.xaml">
+             xmlns:viewModel="clr-namespace:WarehouseSimulation.ViewModels"
+             xmlns:view="clr-namespace:WarehouseSimulation.Views"
+             xmlns:local="clr-namespace:WarehouseSimulation">
     <Application.Resources>
-        <ResourceDictionary>
+
+        <DataTemplate DataType="{x:Type TypeName=viewModel:ProductViewModel}">
+            <view:ProductView/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type TypeName=viewModel:DeliveriesViewModel}">
+            <view:DeliveriesView/>
+        </DataTemplate>
+        
+        
+        <!--<ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Themes/ButtonThemes.xaml"/>
                 <ResourceDictionary Source="Themes/ListViewThemes.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
+        </ResourceDictionary>-->
     </Application.Resources>
 </Application>

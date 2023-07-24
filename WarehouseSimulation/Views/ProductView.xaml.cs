@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Controls;
 using WarehouseSimulation.ViewModels;
 
 namespace WarehouseSimulation.Views
@@ -6,12 +7,12 @@ namespace WarehouseSimulation.Views
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class ProductWindow : Window
+    public partial class ProductView : UserControl
     {
-        public ProductWindow()
+        public ProductView()
         {
             InitializeComponent();
-            DataContext = new ProductVM();
+            //DataContext = new ProductViewModel();
         }
     }
 }
