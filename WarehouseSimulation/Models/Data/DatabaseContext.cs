@@ -1,99 +1,126 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using System;
-using System.Windows.Input;
+using WarehouseSimulation.Models.DatabaseModels;
 
-namespace WarehouseSimulation.Models.Data
+namespace WarehouseSimulation.Models.Data;
+
+public partial class DatabaseContext : DbContext
 {
-    public class DatabaseContext : DbContext
+    public DatabaseContext()
     {
-        public DbSet<Product> Products { get; set; }
-        public DbSet<Rack> Racks { get; set; }
-        public DbSet<RackProduct> RacksProducts { get; set; }
-        public DbSet<ProductType> ProductTypes { get; set; }
-        public DbSet<Dispatch> Dispatches { get; set; }
-        public DbSet<DispatchProduct> DispatchesProducts { get; set; }
-        public DbSet<Delivery> DeliveriesWindow { get; set; }
-        public DbSet<DeliveryProduct> DeliveriesProducts { get; set; }
-
-        public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
-        {
-            Database.EnsureCreated();
-        }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            DateOnlyNullableConverter dateOnlyNullableConverter = new DateOnlyNullableConverter();
-
-            modelBuilder
-                .Entity<Delivery>()
-                .Property(d => d.ApprovalDate)
-                .HasConversion(dateOnlyNullableConverter);
-            modelBuilder
-                .Entity<Delivery>()
-                .Property(d => d.CreationDate)
-                .HasConversion(dateOnlyNullableConverter);
-
-
-            modelBuilder
-                .Entity<Dispatch>()
-                .Property(d => d.ApprovalDate)
-                .HasConversion(dateOnlyNullableConverter);
-            modelBuilder
-                .Entity<Dispatch>()
-                .Property(d => d.CreationDate)
-                .HasConversion(dateOnlyNullableConverter);
-
-            modelBuilder
-                .Entity<RackProduct>()
-                .HasOne(rp => rp.Product)
-                .WithMany(p => p.RackProducts)
-                .OnDelete(DeleteBehavior.NoAction);
-            modelBuilder
-                .Entity<RackProduct>()
-                .HasOne(rp => rp.Rack)
-                .WithMany(r => r.RackProducts)
-                .OnDelete(DeleteBehavior.NoAction);
-
-            modelBuilder
-                .Entity<DeliveryProduct>()
-                .HasOne(rp => rp.Product)
-                .WithMany(p => p.DeliveryProducts)
-                .OnDelete(DeleteBehavior.NoAction);
-            modelBuilder
-                .Entity<DeliveryProduct>()
-                .HasOne(rp => rp.Delivery)
-                .WithMany(d => d.DeliveryProducts)
-                .OnDelete(DeleteBehavior.NoAction);
-
-            modelBuilder
-                .Entity<DispatchProduct>()
-                .HasOne(rp => rp.Product)
-                .WithMany(d => d.DispatchProducts)
-                .OnDelete(DeleteBehavior.NoAction);
-            modelBuilder
-                .Entity<DispatchProduct>()
-                .HasOne(rp => rp.Dispatch)
-                .WithMany(d => d.DispatchProducts)
-                .OnDelete(DeleteBehavior.NoAction);
-
-            base.OnModelCreating(modelBuilder);
-        }
-
-        public class DateOnlyConverter : ValueConverter<DateOnly, DateTime>
-        {
-            public DateOnlyConverter() : base(
-                    d => d.ToDateTime(TimeOnly.MinValue),
-                    d => DateOnly.FromDateTime(d))
-            { }
-        }
-
-        public class DateOnlyNullableConverter : ValueConverter<DateOnly?, DateTime?>
-        {
-            public DateOnlyNullableConverter() : base(
-                    d => d == null ? null : ((DateOnly)d).ToDateTime(TimeOnly.MinValue),
-                    d => d == null ? null : DateOnly.FromDateTime((DateTime)d))
-            { }
-        }
     }
+
+    public DatabaseContext(DbContextOptions<DatabaseContext> options)
+        : base(options)
+    {
+    }
+
+    public virtual DbSet<DeliveriesProduct> DeliveriesProducts { get; set; }
+
+    public virtual DbSet<Delivery> Deliveries { get; set; }
+
+    public virtual DbSet<Dispatch> Dispatches { get; set; }
+
+    public virtual DbSet<DispatchesProduct> DispatchesProducts { get; set; }
+
+    public virtual DbSet<Product> Products { get; set; }
+
+    public virtual DbSet<ProductType> ProductTypes { get; set; }
+
+    public virtual DbSet<Rack> Racks { get; set; }
+
+    public virtual DbSet<RacksProduct> RacksProducts { get; set; }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=WAREHOUSE-DATABASE;TrustServerCertificate=True;Trusted_Connection=True;");
+    
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<DeliveriesProduct>(entity =>
+        {
+            entity.HasKey(e => new { e.DeliveryId, e.ProductId });
+
+            entity.HasIndex(e => e.ProductId, "IX_DeliveriesProducts_ProductId");
+
+            entity.HasOne(d => d.Delivery).WithMany(p => p.DeliveriesProducts)
+                .HasForeignKey(d => d.DeliveryId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_DeliveriesProducts_DeliveriesWindow_DeliveryId");
+
+            entity.HasOne(d => d.Product).WithMany(p => p.DeliveriesProducts)
+                .HasForeignKey(d => d.ProductId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+        });
+
+        modelBuilder.Entity<Delivery>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK_DeliveriesWindow");
+
+            entity.Property(e => e.Id).ValueGeneratedNever();
+        });
+
+        modelBuilder.Entity<Dispatch>(entity =>
+        {
+            entity.Property(e => e.Id).ValueGeneratedNever();
+        });
+
+        modelBuilder.Entity<DispatchesProduct>(entity =>
+        {
+            entity.HasKey(e => new { e.DispatchId, e.ProductId });
+
+            entity.HasIndex(e => e.ProductId, "IX_DispatchesProducts_ProductId");
+
+            entity.HasOne(d => d.Dispatch).WithMany(p => p.DispatchesProducts)
+                .HasForeignKey(d => d.DispatchId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+
+            entity.HasOne(d => d.Product).WithMany(p => p.DispatchesProducts)
+                .HasForeignKey(d => d.ProductId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+        });
+
+        modelBuilder.Entity<Product>(entity =>
+        {
+            entity.Property(e => e.Id).ValueGeneratedNever();
+
+            entity.HasOne(d => d.Type).WithMany(p => p.Products)
+                .HasForeignKey(d => d.TypeId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Products_ProductTypes");
+        });
+
+        modelBuilder.Entity<ProductType>(entity =>
+        {
+            entity.Property(e => e.Id).ValueGeneratedNever();
+        });
+
+        modelBuilder.Entity<Rack>(entity =>
+        {
+            entity.Property(e => e.Id).ValueGeneratedNever();
+
+            entity.HasOne(d => d.Type).WithMany(p => p.Racks)
+                .HasForeignKey(d => d.TypeId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Racks_ProductTypes");
+        });
+
+        modelBuilder.Entity<RacksProduct>(entity =>
+        {
+            entity.HasKey(e => new { e.RackId, e.ProductId });
+
+            entity.HasIndex(e => e.ProductId, "IX_RacksProducts_ProductId");
+
+            entity.HasOne(d => d.Product).WithMany(p => p.RacksProducts)
+                .HasForeignKey(d => d.ProductId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+
+            entity.HasOne(d => d.Rack).WithMany(p => p.RacksProducts)
+                .HasForeignKey(d => d.RackId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+        });
+
+        OnModelCreatingPartial(modelBuilder);
+    }
+
+    partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 }
