@@ -7,16 +7,6 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="100"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-
-        <StackPanel Grid.Column="0">
-            <Button Content="Delivery" Command="{Binding Path=NavigateToDeliveriesViewCommand}"/>
-            <Button Content="Product" Command="{Binding Path=NavigateToProductsViewCommand}"/>
-        </StackPanel>
-
-        <ContentControl Grid.Column="1" Content="{Binding Path=Navigation.CurrentView}"></ContentControl>
+        <ContentControl Content="{Binding Path=Navigation.CurrentView}"></ContentControl>
     </Grid>
 </Window>

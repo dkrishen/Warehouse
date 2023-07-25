@@ -23,7 +23,6 @@ namespace WarehouseSimulation.Views
         public MainWindow()
         {
             InitializeComponent();
-            //DataContext = MainViewModel();
         }
     }
 }
