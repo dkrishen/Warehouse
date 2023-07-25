@@ -12,14 +12,24 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
 
-        <!--<Button Grid.Column="0" Grid.Row="0" x:Name="AddDeliveryButton" Content="Add Delivery" Style="{StaticResource ButtonTheme}"/>
-        <Button Grid.Column="1" Grid.Row="0" x:Name="AddRackButton" Content="Add Rack" Style="{StaticResource ButtonTheme}"/>-->
-        <Button Grid.Column="2" Grid.Row="0" x:Name="ReturnButton" Content="Return to main" Command="{Binding NavigateToProductsViewCommand}"/>
+        <Button Grid.Column="0" Grid.Row="0" 
+                x:Name="AddDeliveryButton" 
+                Content="Add Delivery" 
+                Style="{StaticResource ButtonTheme}"/>
+        <Button Grid.Column="1" Grid.Row="0" 
+                x:Name="AddRackButton" 
+                Content="Add Rack" 
+                Style="{StaticResource ButtonTheme}"/>
+        <Button Grid.Column="2" Grid.Row="0" 
+                x:Name="ReturnButton" 
+                Content="Return to main" 
+                Command="{Binding NavigateToProductsViewCommand}" 
+                Style="{StaticResource ButtonTheme}"/>
 
         <!--<DataGrid Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" >
             
@@ -29,7 +39,7 @@
             
         </StackPanel>-->
         
-        <!--<ListView Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" x:Name="ProductListView">
+        <ListView Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" x:Name="ProductListView">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Delivery ID" Width="auto"/>
@@ -37,7 +47,7 @@
                     <GridViewColumn Header="Product count" Width="100"/>
                 </GridView>
             </ListView.View>
-        </ListView>-->
+        </ListView>
 
     </Grid>
 </UserControl>

@@ -17,8 +17,15 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <Button Grid.Column="0" Grid.Row="0" x:Name="DeliveryButton" Content="Deliveries" Command="{Binding NavigateToDeliveriesViewCommand}"/>
-        <!--<Button Grid.Column="1" Grid.Row="0" x:Name="DispatchButton" Content="Dispatches" Style="{StaticResource ButtonTheme}"/>-->
+        <Button Grid.Column="0" Grid.Row="0" 
+                x:Name="DeliveryButton" 
+                Content="Deliveries" 
+                Command="{Binding NavigateToDeliveriesViewCommand}"
+                Style="{StaticResource ButtonTheme}"/>
+        <Button Grid.Column="1" Grid.Row="0" 
+                x:Name="DispatchButton" 
+                Content="Dispatches" 
+                Style="{StaticResource ButtonTheme}"/>
 
         <!--Themes!!!-->
         <ListView Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" x:Name="ProductListView" ItemsSource="{Binding AllProducts}"> 

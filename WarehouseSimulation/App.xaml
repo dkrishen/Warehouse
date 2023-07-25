@@ -5,21 +5,19 @@
              xmlns:view="clr-namespace:WarehouseSimulation.Views"
              xmlns:local="clr-namespace:WarehouseSimulation">
     <Application.Resources>
+        <ResourceDictionary>
+            <DataTemplate DataType="{x:Type TypeName=viewModel:ProductViewModel}">
+                <view:ProductView/>
+            </DataTemplate>
 
-        <DataTemplate DataType="{x:Type TypeName=viewModel:ProductViewModel}">
-            <view:ProductView/>
-        </DataTemplate>
-
-        <DataTemplate DataType="{x:Type TypeName=viewModel:DeliveriesViewModel}">
-            <view:DeliveriesView/>
-        </DataTemplate>
-        
-        
-        <!--<ResourceDictionary>
+            <DataTemplate DataType="{x:Type TypeName=viewModel:DeliveriesViewModel}">
+                <view:DeliveriesView/>
+            </DataTemplate>
+            
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Themes/ButtonThemes.xaml"/>
                 <ResourceDictionary Source="Themes/ListViewThemes.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>-->
+        </ResourceDictionary>
     </Application.Resources>
 </Application>
