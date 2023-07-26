@@ -1,0 +1,16 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Style BasedOn="{StaticResource {x:Type ComboBox}}" 
+           TargetType="{x:Type ComboBox}"
+           x:Key="ComboBoxTheme">
+        <Style.Setters>
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="Margin" Value="10"/>
+        </Style.Setters>
+        <Style.Resources>
+            <Style TargetType="Border">
+                <Setter Property="CornerRadius" Value="5"/>
+            </Style>
+        </Style.Resources>
+    </Style>
+</ResourceDictionary>

@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 using WarehouseSimulation.Models.DatabaseModels;
 using WarehouseSimulation.Models.ViewModels;
 
-namespace WarehouseSimulation.Models.Data
+namespace WarehouseSimulation.Data
 {
-    public static class DataWorker
+    public static class ProductDataWorker
     {
         public static IEnumerable<ProductViewDto> GetProductsCountInfo()
         {

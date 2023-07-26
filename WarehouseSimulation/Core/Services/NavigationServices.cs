@@ -38,7 +38,7 @@ namespace WarehouseSimulation.Core.Services
             _ViewHistory.Push(CurrentView);
         }
 
-        public void NavigateBack()
+        public void ToBack()
         {
             _ViewHistory.Pop();
             CurrentView = _ViewHistory.Peek();

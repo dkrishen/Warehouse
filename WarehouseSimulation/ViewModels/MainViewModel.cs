@@ -1,5 +1,5 @@
 ﻿using WarehouseSimulation.Core;
-using WarehouseSimulation.Services;
+using WarehouseSimulation.Core.Services;
 
 namespace WarehouseSimulation.ViewModels
 {
@@ -17,18 +17,18 @@ namespace WarehouseSimulation.ViewModels
             }
         }
 
-        public RelayCommand NavigateToProductsViewCommand { get; set; }
+        public RelayCommand NavigateToWarehouseViewCommand { get; set; }
 
         public MainViewModel(INavigationServices navService)
         {
             Navigation = navService;
 
-            NavigateToProductsViewCommand = new RelayCommand(o =>
+            NavigateToWarehouseViewCommand = new RelayCommand(o =>
             {
-                Navigation.NavigateTo<ProductViewModel>();
+                Navigation.NavigateTo<WarehouseViewModel>();
             }, canExecute: o => true);
 
-            NavigateToProductsViewCommand.Execute(true);
+            NavigateToWarehouseViewCommand.Execute(true);
         }
     }
 }

@@ -14,37 +14,25 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
 
         <Button Grid.Column="0" Grid.Row="0" 
                 x:Name="AddDeliveryButton" 
                 Content="Add Delivery" 
+                Command="{Binding NavigateToAddDeliveryViewCommand}"
                 Style="{StaticResource ButtonTheme}"/>
         <Button Grid.Column="1" Grid.Row="0" 
-                x:Name="AddRackButton" 
-                Content="Add Rack" 
-                Style="{StaticResource ButtonTheme}"/>
-        <Button Grid.Column="2" Grid.Row="0" 
-                x:Name="ReturnButton" 
-                Content="Return to main" 
-                Command="{Binding NavigateToProductsViewCommand}" 
+                x:Name="BackButton" 
+                Content="Back" 
+                Command="{Binding NavigateToPreviousViewCommand}" 
                 Style="{StaticResource ButtonTheme}"/>
 
-        <!--<DataGrid Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" >
-            
-        </DataGrid>-->
-        
-        <!--<StackPanel Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" x:Name="ProductListView">
-            
-        </StackPanel>-->
-        
-        <ListView Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" x:Name="ProductListView">
+        <ListView Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" x:Name="ProductListView">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Delivery ID" Width="auto"/>
-                    <GridViewColumn Header="Product name" Width="100"/>
-                    <GridViewColumn Header="Product count" Width="100"/>
+                    <GridViewColumn Header="Creation Date" Width="auto"/>
+                    <GridViewColumn Header="Total Cost" Width="auto"/>
                 </GridView>
             </ListView.View>
         </ListView>

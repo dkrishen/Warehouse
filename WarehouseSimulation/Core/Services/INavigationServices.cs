@@ -11,6 +11,6 @@ namespace WarehouseSimulation.Core.Services
     {
         public ViewModelBase CurrentView { get; }
         public void NavigateTo<T>() where T : ViewModelBase;
-        public void NavigateBack();
+        public void ToBack();
     }
 }

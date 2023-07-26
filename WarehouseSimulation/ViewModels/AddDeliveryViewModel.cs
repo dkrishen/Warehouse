@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WarehouseSimulation.Core;
 using WarehouseSimulation.Core.Services;
+using WarehouseSimulation.Core;
 
 namespace WarehouseSimulation.ViewModels
 {
-    public class DeliveriesViewModel : ViewModelBase
+    public class AddDeliveryViewModel : ViewModelBase
     {
         private INavigationServices _Navigation;
         public INavigationServices Navigation
@@ -22,20 +21,34 @@ namespace WarehouseSimulation.ViewModels
             }
         }
 
-        public RelayCommand NavigateToAddDeliveryViewCommand { get; set; }
         public RelayCommand NavigateToPreviousViewCommand { get; set; }
+        public RelayCommand AddProductCommand { get; set; }
+        public RelayCommand NavigateToProductsViewCommand { get; set; }
+        public RelayCommand AddDeliveryCommand { get; set; }
 
-        public DeliveriesViewModel(INavigationServices navService)
+        public AddDeliveryViewModel(INavigationServices navService)
         {
             Navigation = navService;
             NavigateToPreviousViewCommand = new RelayCommand(o =>
             {
                 Navigation.ToBack();
             }, canExecute: o => true);
-            NavigateToAddDeliveryViewCommand = new RelayCommand(o =>
+            NavigateToProductsViewCommand = new RelayCommand(o =>
             {
-                Navigation.NavigateTo<AddDeliveryViewModel>();
+                Navigation.NavigateTo<ProductsViewModel>();
+            }, canExecute: o => true);
+            AddProductCommand = new RelayCommand(o =>
+            {
+                // TODO:
+
+            }, canExecute: o => true);
+            AddDeliveryCommand = new RelayCommand(o =>
+            {
+                // TODO:
+
+                NavigateToPreviousViewCommand.Execute(true);
             }, canExecute: o => true);
         }
+
     }
 }

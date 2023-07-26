@@ -2,7 +2,7 @@
 using System;
 using System.Windows;
 using WarehouseSimulation.Core;
-using WarehouseSimulation.Services;
+using WarehouseSimulation.Core.Services;
 using WarehouseSimulation.ViewModels;
 using WarehouseSimulation.Views;
 
@@ -24,8 +24,14 @@ namespace WarehouseSimulation
                 DataContext = provider.GetRequiredService<MainViewModel>()
             });
             services.AddSingleton<MainViewModel>();
-            services.AddSingleton<ProductViewModel>();
+            services.AddSingleton<WarehouseViewModel>();
             services.AddSingleton<DeliveriesViewModel>();
+            services.AddSingleton<DispatchesViewModel>();
+            services.AddSingleton<AddDeliveryViewModel>();
+            services.AddSingleton<AddDispatchViewModel>();
+            services.AddSingleton<TypesViewModel>();
+            services.AddSingleton<RacksViewModel>();
+            services.AddSingleton<ProductsViewModel>();
             services.AddSingleton<INavigationServices, NavigationServices>();
 
             services.AddSingleton<Func<Type, ViewModelBase>>(serviceProvider => viewModelType => (ViewModelBase)serviceProvider.GetRequiredService(viewModelType));

@@ -12,7 +12,6 @@ namespace WarehouseSimulation.Views
         public DeliveriesView()
         {
             InitializeComponent();
-            //DataContext = new DeliveriesViewModel();
         }
     }
 }

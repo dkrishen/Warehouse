@@ -6,17 +6,43 @@
              xmlns:local="clr-namespace:WarehouseSimulation">
     <Application.Resources>
         <ResourceDictionary>
-            <DataTemplate DataType="{x:Type TypeName=viewModel:ProductViewModel}">
-                <view:ProductView/>
+            <DataTemplate DataType="{x:Type TypeName=viewModel:WarehouseViewModel}">
+                <view:WarehouseView/>
             </DataTemplate>
 
             <DataTemplate DataType="{x:Type TypeName=viewModel:DeliveriesViewModel}">
                 <view:DeliveriesView/>
             </DataTemplate>
+
+            <DataTemplate DataType="{x:Type TypeName=viewModel:DispatchesViewModel}">
+                <view:DispatchesView/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type TypeName=viewModel:AddDeliveryViewModel}">
+                <view:AddDeliveryView/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type TypeName=viewModel:AddDispatchViewModel}">
+                <view:AddDispatchView/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type TypeName=viewModel:ProductsViewModel}">
+                <view:ProductsView/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type TypeName=viewModel:RacksViewModel}">
+                <view:RacksView/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type TypeName=viewModel:TypesViewModel}">
+                <view:TypesView/>
+            </DataTemplate>
             
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Themes/ButtonThemes.xaml"/>
                 <ResourceDictionary Source="Themes/ListViewThemes.xaml"/>
+                <ResourceDictionary Source="Themes/TextBoxThemes.xaml"/>
+                <ResourceDictionary Source="Themes/ComboBoxThemes.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
