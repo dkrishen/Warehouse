@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using WarehouseSimulation.Core;
 using WarehouseSimulation.Core.Services;
@@ -47,11 +48,16 @@ namespace WarehouseSimulation.ViewModels
         }
 
 
-        private List<ProductViewDto> allProducts = ProductDataWorker.GetProductsCountInfo().ToList();
+        private List<ProductViewDto> _AllProducts = ProductDataWorker.GetProductsCountInfo().ToList();
         public List<ProductViewDto> AllProducts
         {
-            get { return allProducts; }
-            set { allProducts = value; OnPropertyChanged("allProducts"); }
+            get { return _AllProducts; }
+            set { _AllProducts = value; OnPropertyChanged("AllProducts"); }
+        }
+
+        internal void UpdateData()
+        {
+            AllProducts = ProductDataWorker.GetProductsCountInfo().ToList();
         }
     }
 }
