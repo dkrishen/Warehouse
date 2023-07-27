@@ -40,17 +40,20 @@
                 Command="{Binding NavigateToRacksViewCommand}"
                 Style="{StaticResource ButtonTheme}"/>
 
-        <!--Themes!!!-->
-        <ListView Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="1" x:Name="ProductListView" ItemsSource="{Binding AllProducts}"> 
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="SKU" DisplayMemberBinding="{Binding Path=SKU}" Width="300"/>
-                    <GridViewColumn Header="Type" DisplayMemberBinding="{Binding Path=Type}" Width="300"/>
-                    <GridViewColumn Header="Cost" DisplayMemberBinding="{Binding Path=Cost}" Width="100"/>
-                    <GridViewColumn Header="Count" DisplayMemberBinding="{Binding Path=Count}" Width="100"/>
-                </GridView>
-            </ListView.View>
-        </ListView>
-        
+        <DataGrid Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="1" 
+                  AutoGenerateColumns="False"
+                  Style="{StaticResource DataGridTheme}"
+                  SelectionMode="Single"
+                  IsReadOnly="True"
+                  ItemsSource="{Binding AllProducts, UpdateSourceTrigger=PropertyChanged}"
+                  x:Name="ProductDataGrid"
+                  Loaded="OnLoaded">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="SKU"   Width="2*" Binding="{Binding Path=SKU}"/>
+                <DataGridTextColumn Header="Type"  Width="2*" Binding="{Binding Path=Type}"/>
+                <DataGridTextColumn Header="Cost"  Width="1*" Binding="{Binding Path=Cost}"/>
+                <DataGridTextColumn Header="Count" Width="1*" Binding="{Binding Path=Count}"/>
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </UserControl>

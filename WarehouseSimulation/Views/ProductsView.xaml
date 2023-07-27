@@ -5,10 +5,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WarehouseSimulation.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="800"
+             Loaded="OnLoaded">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="4*"/>
+            <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="1*"/>
@@ -21,25 +23,34 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <ListView Grid.Column="0" Grid.RowSpan="5" Grid.Row="0" x:Name="ProductListView">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="ID" Width="auto"/>
-                    <GridViewColumn Header="Type" Width="auto"/>
-                    <GridViewColumn Header="SKU" Width="auto"/>
-                    <GridViewColumn Header="Cost" Width="auto"/>
-                </GridView>
-            </ListView.View>
-        </ListView>
+        <DataGrid Grid.Column="0" Grid.RowSpan="5" Grid.Row="0"
+                  AutoGenerateColumns="False"
+                  Style="{StaticResource DataGridTheme}"
+                  SelectionMode="Single"
+                  IsReadOnly="True"
+                  SelectedItem="{Binding SelectedProduct}"
+                  ItemsSource="{Binding AllProducts, UpdateSourceTrigger=PropertyChanged}"
+                  x:Name="ProductDataGrid">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="SKU" Width="2*" Binding="{Binding SKU}"/>
+                <DataGridTextColumn Header="Type" Width="2*" Binding="{Binding Type}"/>
+                <DataGridTextColumn Header="Cost" Width="1*" Binding="{Binding Cost}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+            
 
         <ComboBox x:Name="TypeInputComboBox" 
-                  Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="3" 
+                  Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="4" 
+                  SelectedItem="{Binding SelectedType}"
+                  ItemsSource="{Binding AllTypes}"
                   Style="{StaticResource ComboBoxTheme}"/>
         <TextBox x:Name="SkuInputTextBox" 
-                 Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="3"
+                 Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="4"
+                 Text="{Binding NewProductSku}"
                  Style="{StaticResource TextBoxTheme}"/>
         <TextBox x:Name="CostInputTextBox" 
-                 Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="3"
+                 Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="4"
+                 Text="{Binding NewProductCost}"
                  Style="{StaticResource TextBoxTheme}"/>
         <Button x:Name="BackButton" 
                 Grid.Column="1" Grid.Row="3" 
@@ -51,9 +62,14 @@
                 Content="Add"
                 Command="{Binding AddProductCommand}"
                 Style="{StaticResource ButtonTheme}"/>
-        <Button x:Name="AddTypeButton" 
+        <Button x:Name="RemoveButton" 
                 Grid.Column="3" Grid.Row="3" 
-                Content="Add Type"
+                Content="Remove"
+                Command="{Binding RemoveProductCommand}"
+                Style="{StaticResource ButtonTheme}"/>
+        <Button x:Name="TypesButton" 
+                Grid.Column="4" Grid.Row="3" 
+                Content="Types"
                 Command="{Binding NavigateToTypesViewCommand}"
                 Style="{StaticResource ButtonTheme}"/>
     </Grid>

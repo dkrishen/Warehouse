@@ -22,14 +22,18 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <ListView Grid.Column="0" Grid.RowSpan="5" Grid.Row="0" x:Name="RackListView">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="Product SKU" Width="auto"/>
-                    <GridViewColumn Header="Count" Width="auto"/>
-                </GridView>
-            </ListView.View>
-        </ListView>
+        <DataGrid Grid.Column="0" Grid.RowSpan="5" Grid.Row="0"
+                  AutoGenerateColumns="False"
+                  Style="{StaticResource DataGridTheme}"
+                  SelectionMode="Single"
+                  IsReadOnly="True"
+                  ItemsSource="{Binding Delivery, UpdateSourceTrigger=PropertyChanged}"
+                  x:Name="DeliveryDataGrid">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Product SKU" Width="1*"/>
+                <DataGridTextColumn Header="Count" Width="1*"/>
+            </DataGrid.Columns>
+        </DataGrid>
 
         <ComboBox x:Name="ProductComboBox" 
                   Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="4" 

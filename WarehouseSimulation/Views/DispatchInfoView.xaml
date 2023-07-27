@@ -33,14 +33,19 @@
                 Command="{Binding NavigateToPreviousViewCommand}" 
                 Style="{StaticResource ButtonTheme}"/>
 
-        <ListView Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" x:Name="ProductListView">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="Product SKU" Width="auto"/>
-                    <GridViewColumn Header="Product Count" Width="auto"/>
-                    <GridViewColumn Header="Product Cost" Width="auto"/>
-                </GridView>
-            </ListView.View>
-        </ListView>
+        <DataGrid Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1"
+                  AutoGenerateColumns="False"
+                  Style="{StaticResource DataGridTheme}"
+                  SelectionMode="Single"
+                  IsReadOnly="True"
+                  ItemsSource="{Binding AllProducts, UpdateSourceTrigger=PropertyChanged}"
+                  x:Name="ProductDataGrid">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Product SKU" Width="1*"/>
+                <DataGridTextColumn Header="Product Count" Width="1*"/>
+                <DataGridTextColumn Header="Product Cost" Width="1*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        
     </Grid>
 </UserControl>

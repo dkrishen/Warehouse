@@ -43,6 +43,7 @@
                 <ResourceDictionary Source="Themes/ListViewThemes.xaml"/>
                 <ResourceDictionary Source="Themes/TextBoxThemes.xaml"/>
                 <ResourceDictionary Source="Themes/ComboBoxThemes.xaml"/>
+                <ResourceDictionary Source="Themes/DataGridThemes.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

@@ -28,15 +28,19 @@
                 Command="{Binding NavigateToPreviousViewCommand}" 
                 Style="{StaticResource ButtonTheme}"/>
 
-        <ListView Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" x:Name="ProductListView">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="Dispatch ID" Width="auto"/>
-                    <GridViewColumn Header="Creation Date" Width="auto"/>
-                    <GridViewColumn Header="Total Cost" Width="auto"/>
-                </GridView>
-            </ListView.View>
-        </ListView>
-
+        <DataGrid Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1"
+                  AutoGenerateColumns="False"
+                  Style="{StaticResource DataGridTheme}"
+                  SelectionMode="Single"
+                  IsReadOnly="True"
+                  ItemsSource="{Binding AllDispatches, UpdateSourceTrigger=PropertyChanged}"
+                  x:Name="DispatcheDataGrid">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Dispatch ID" Width="1*"/>
+                <DataGridTextColumn Header="Creation Date" Width="1*"/>
+                <DataGridTextColumn Header="Total Cost" Width="1*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        
     </Grid>
 </UserControl>

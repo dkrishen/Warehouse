@@ -5,10 +5,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WarehouseSimulation.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="800"
+             Loaded="OnLoaded">
     <Grid>  
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="4*"/>
+            <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="1*"/>
@@ -21,25 +23,33 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <ListView Grid.Column="0" Grid.RowSpan="5" Grid.Row="0" x:Name="RackListView">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="ID" Width="auto"/>
-                    <GridViewColumn Header="Type" Width="auto"/>
-                    <GridViewColumn Header="Size" Width="auto"/>
-                    <GridViewColumn Header="Number" Width="auto"/>
-                </GridView>
-            </ListView.View>
-        </ListView>
+        <DataGrid Grid.Column="0" Grid.RowSpan="5" Grid.Row="0"
+                  AutoGenerateColumns="False"
+                  Style="{StaticResource DataGridTheme}"
+                  SelectionMode="Single"
+                  IsReadOnly="True"
+                  SelectedItem="{Binding SelectedRack}"
+                  ItemsSource="{Binding AllRacks, UpdateSourceTrigger=PropertyChanged}"
+                  x:Name="RackDataGrid">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Number" Width="1*" Binding="{Binding Path=Number}"/>
+                <DataGridTextColumn Header="Type" Width="1*" Binding="{Binding Path=Type}"/>
+                <DataGridTextColumn Header="Size" Width="1*" Binding="{Binding Path=Size}"/>
+            </DataGrid.Columns>
+        </DataGrid>
 
         <ComboBox x:Name="TypeInputComboBox" 
-                  Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="3" 
-                  Style="{StaticResource ComboBoxTheme}"/>
+                Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="4" 
+                ItemsSource="{Binding AllTypes, UpdateSourceTrigger=PropertyChanged}"
+                SelectedItem="{Binding SelectedType}"
+                Style="{StaticResource ComboBoxTheme}"/>
         <TextBox x:Name="SizeInputTextBox" 
-                 Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="3"
+                 Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="4"
+                 Text="{Binding NewRackSize}"
                  Style="{StaticResource TextBoxTheme}"/>
         <TextBox x:Name="NumberInputTextBox" 
-                 Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="3"
+                 Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="4"
+                 Text="{Binding NewRackNumber}"
                  Style="{StaticResource TextBoxTheme}"/>
         <Button x:Name="BackButton" 
                 Grid.Column="1" Grid.Row="3" 
@@ -51,9 +61,14 @@
                 Content="Add"
                 Command="{Binding AddRackCommand}"
                 Style="{StaticResource ButtonTheme}"/>
-        <Button x:Name="AddTypeButton" 
+        <Button x:Name="RemoveButton" 
                 Grid.Column="3" Grid.Row="3" 
-                Content="Add Type"
+                Content="Remove"
+                Command="{Binding RemoveRackCommand}"
+                Style="{StaticResource ButtonTheme}"/>
+        <Button x:Name="TypesButton" 
+                Grid.Column="4" Grid.Row="3" 
+                Content="Types"
                 Command="{Binding NavigateToTypesViewCommand}"
                 Style="{StaticResource ButtonTheme}"/>
     </Grid>
