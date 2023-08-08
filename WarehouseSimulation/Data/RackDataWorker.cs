@@ -101,6 +101,99 @@ namespace WarehouseSimulation.Data
             }
         }
 
+        public static IEnumerable<RackViewDto> GetRacksByProduct(string productSKU)
+        {
+            using (DatabaseContext context = new DatabaseContext())
+            {
+                return context.RacksProducts
+                    .Include(rp => rp.Product)
+                    .Where(rp => rp.Product.Sku == productSKU && rp.RackId != null)
+                    .Include(rp => rp.Rack)
+                    .ThenInclude(r => r.Type)
+                    .Select(rp => new RackViewDto
+                    {
+                        Number = rp.Rack.Number,
+                        Type = rp.Rack.Type.TypeName,
+                        Size = rp.Rack.Size
+                    })
+                    .ToList();
+            }
+        }
+
+        public static int GetProductsCountInRack(int rackNumber, string productSku)
+        {
+            using (DatabaseContext context = new DatabaseContext())
+            {
+                return context.RacksProducts
+                    .Include(rp => rp.Rack)
+                    .Include(rp => rp.Product)
+                    .First(rp => rp.Rack.Number == rackNumber && rp.Product.Sku == productSku)
+                    .ProductCount;
+            }
+        }
+
+        public static bool TakeProductFromRack(string productSKU, int rackNumber, int count)
+        {
+            using (DatabaseContext context = new DatabaseContext())
+            {
+                try
+                {
+                    var rackProduct = context.RacksProducts
+                        .Where(rp => rp.RackId != null)
+                        .Include(rp => rp.Rack)
+                        .Include(rp => rp.Product)
+                        .FirstOrDefault(rp => rp.Rack.Number == rackNumber && rp.Product.Sku == productSKU);
+
+                    if (rackProduct == null || rackProduct.ProductCount < count)
+                    {
+                        return false;
+                    }
+
+                    rackProduct.ProductCount -= count;
+
+                    if(rackProduct.ProductCount == 0)
+                    {
+                        context.RacksProducts.Remove(rackProduct);
+                    }
+
+                    context.SaveChanges();
+
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    return false;
+                }
+            }
+        }
+
+        public static bool TakeProductFromSump(string productSKU, int count)
+        {
+            using (DatabaseContext context = new DatabaseContext())
+            {
+                try
+                {
+                    var sump = context.RacksProducts
+                        .Include(rp => rp.Product)
+                        .FirstOrDefault(rp => rp.RackId == null && rp.Product.Sku == productSKU);
+
+                    if (sump == null || sump.ProductCount < count)
+                    {
+                        return false;
+                    }
+
+                    sump.ProductCount -= count;
+                    context.SaveChanges();
+
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    return false;
+                }
+            }
+        }
+
         public static int GetFreeSpaceAmountInRack(int rackNumber)
         {
             using (DatabaseContext context = new DatabaseContext())
@@ -130,7 +223,7 @@ namespace WarehouseSimulation.Data
             }
         }
 
-        public static bool PutProductOnTheRack(string productSKU, int rackNumber, int count)
+        public static bool PutProductOnRack(string productSKU, int rackNumber, int count)
         {
             using (DatabaseContext context = new DatabaseContext())
             {
@@ -155,22 +248,32 @@ namespace WarehouseSimulation.Data
             }
         }
 
-        public static bool PutProductOnTheSump(string productSKU, int count)
+        public static bool PutProductOnSump(string productSKU, int count)
         {
             using (DatabaseContext context = new DatabaseContext())
             {
                 try
                 {
-                    var product = context.Products.Single(p => p.Sku == productSKU);
+                    var productSump = context.RacksProducts
+                        .Include(rp => rp.Product)
+                        .FirstOrDefault(rp => rp.Product.Sku == productSKU && rp.RackId == null);
 
-                    context.RacksProducts.Add(new RacksProduct
+                    if (productSump != null)
                     {
-                        RackId = null,
-                        ProductId = product.Id,
-                        ProductCount = count,
-                        Id = Guid.NewGuid()
-                    });
+                        productSump.ProductCount += count;
+                    }
+                    else
+                    {
+                        var product = context.Products.Single(p => p.Sku == productSKU);
 
+                        context.RacksProducts.Add(new RacksProduct
+                        {
+                            RackId = null,
+                            ProductId = product.Id,
+                            ProductCount = count,
+                            Id = Guid.NewGuid()
+                        });
+                    }
                     context.SaveChanges();
                     return true;
                 }

@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WarehouseSimulation.Core.Services;
 using WarehouseSimulation.Core;
+using WarehouseSimulation.Data;
+using WarehouseSimulation.Models.ViewModels;
+using WarehouseSimulation.Models.DatabaseModels;
+using System.Linq;
 
 namespace WarehouseSimulation.ViewModels
 {
@@ -21,12 +22,21 @@ namespace WarehouseSimulation.ViewModels
             }
         }
 
+        private List<ProductViewDto> _AllProducts { get; set; }
+        public List<ProductViewDto> AllProducts
+        {
+            get { return _AllProducts; }
+            set { _AllProducts = value; OnPropertyChanged("AllProducts"); }
+        }
+
         public RelayCommand RemoveDispatchCommand { get; set; }
         public RelayCommand ApproveDispatchCommand { get; set; }
         public RelayCommand NavigateToPreviousViewCommand { get; set; }
+        public Guid? DispatchId { get; set; }
 
         public DispatchInfoViewModel(INavigationServices navService)
         {
+            DispatchId = GlobalVariables.SelectedDispatchId;
             Navigation = navService;
             NavigateToPreviousViewCommand = new RelayCommand(o =>
             {
@@ -34,16 +44,32 @@ namespace WarehouseSimulation.ViewModels
             }, canExecute: o => true);
             ApproveDispatchCommand = new RelayCommand(o =>
             {
-                // TODO:
-
-                NavigateToPreviousViewCommand.Execute(true);
+                if (DispatchDataWorker.ApproveDispatch(DispatchId ?? Guid.Empty, DateTime.UtcNow))
+                {
+                    NavigateToPreviousViewCommand.Execute(true);
+                }
             }, canExecute: o => true);
             RemoveDispatchCommand = new RelayCommand(o =>
             {
-                // TODO:
-
+                DispatchDataWorker.RemoveDispatch(DispatchId ?? Guid.Empty);
                 NavigateToPreviousViewCommand.Execute(true);
             }, canExecute: o => true);
+
+            if (DispatchId == null)
+            {
+                NavigateToPreviousViewCommand.Execute(true);
+            }
+            else
+            {
+                AllProducts = DispatchDataWorker.GetProductsByDispatchId(DispatchId ?? Guid.Empty).ToList();
+            }
+        }
+
+        public void UpdateData()
+        {
+            DispatchId = GlobalVariables.SelectedDispatchId;
+            AllProducts = DispatchDataWorker.GetProductsByDispatchId(DispatchId ?? Guid.Empty).ToList();
+            GlobalVariables.SelectedDispatchId = null;
         }
     }
 }

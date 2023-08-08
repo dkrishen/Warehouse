@@ -113,9 +113,14 @@ namespace WarehouseSimulation.ViewModels
             }, canExecute: o => true);
             AddDispatchCommand = new RelayCommand(o =>
             {
-                // TODO:
-
-                NavigateToPreviousViewCommand.Execute(true);
+                if (AllProductsInDispatch.Count != 0
+                    && DispatchDataWorker.CreateDispatch(AllProductsInDispatch, DateTime.UtcNow))
+                {
+                    AllProductsInDispatch.Clear();
+                    SelectedProductForAdd = null;
+                    AddedProductCount = null;
+                    NavigateToPreviousViewCommand.Execute(true);
+                }
             }, canExecute: o => true);
         }
 

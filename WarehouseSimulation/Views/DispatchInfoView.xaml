@@ -5,7 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WarehouseSimulation.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="800"
+             Loaded="OnLoaded">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
@@ -41,9 +42,9 @@
                   ItemsSource="{Binding AllProducts, UpdateSourceTrigger=PropertyChanged}"
                   x:Name="ProductDataGrid">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Product SKU" Width="1*"/>
-                <DataGridTextColumn Header="Product Count" Width="1*"/>
-                <DataGridTextColumn Header="Product Cost" Width="1*"/>
+                <DataGridTextColumn Header="Product SKU" Width="1*" Binding="{Binding SKU}"/>
+                <DataGridTextColumn Header="Product Count" Width="1*" Binding="{Binding Count}"/>
+                <DataGridTextColumn Header="Product Cost" Width="1*" Binding="{Binding Cost}"/>
             </DataGrid.Columns>
         </DataGrid>
         

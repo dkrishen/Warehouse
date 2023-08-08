@@ -142,5 +142,26 @@ namespace WarehouseSimulation.Data
                     .ToList();
             }
         }
+
+        public static IEnumerable<ProductViewDto> GetProductsCountInfoByDispatchId(Guid dispatchId)
+        {
+            using (DatabaseContext context = new DatabaseContext())
+            {
+                return context.DispatchesProducts
+                    .Include(dp => dp.Product)
+                    .ThenInclude(p => p.Type)
+                    .Where(p => p.DispatchId == dispatchId)
+                    .Select(dp =>
+                        new ProductViewDto
+                        {
+                            Id = dp.Product.Id,
+                            Cost = dp.Product.Cost,
+                            SKU = dp.Product.Sku,
+                            Type = dp.Product.Type.TypeName,
+                            Count = dp.ProductCount
+                        })
+                    .ToList();
+            }
+        }
     }
 }

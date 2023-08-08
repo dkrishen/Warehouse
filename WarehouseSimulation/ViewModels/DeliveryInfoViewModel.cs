@@ -44,7 +44,7 @@ namespace WarehouseSimulation.ViewModels
             }, canExecute: o => true);
             ApproveDeliveryCommand = new RelayCommand(o =>
             {
-                if(DeliveryDataWorker.ApproveDelivery(DeliveryId ?? Guid.Empty))
+                if(DeliveryDataWorker.ApproveDelivery(DeliveryId ?? Guid.Empty, DateTime.UtcNow))
                 {
                     NavigateToPreviousViewCommand.Execute(true);
                 }

@@ -110,7 +110,7 @@ namespace WarehouseSimulation.Data
             }
         }
 
-        public static bool ApproveDelivery(Guid deliveryId)
+        public static bool ApproveDelivery(Guid deliveryId, DateTime approvalDate)
         {
             using (DatabaseContext context = new DatabaseContext())
             {
@@ -126,7 +126,7 @@ namespace WarehouseSimulation.Data
                             var rack = racks.FirstOrDefault(r => r.Type == product.Type);
                             if (rack == null)
                             {
-                                RackDataWorker.PutProductOnTheSump(product.SKU, product.Count);
+                                RackDataWorker.PutProductOnSump(product.SKU, product.Count);
                                 break;
                             }
                             var delta = Math.Min(rack.FreeSpace, product.Count);
@@ -142,10 +142,14 @@ namespace WarehouseSimulation.Data
                                 racks.Remove(rack);
                             }
 
-                            RackDataWorker.PutProductOnTheRack(product.SKU, rack.Number, delta);
+                            RackDataWorker.PutProductOnRack(product.SKU, rack.Number, delta);
                         } while (product.Count > 0);
-
                     });
+
+                    var delivery = context.Deliveries.Single(d => d.Id == deliveryId);
+                    delivery.ApprovalDate = approvalDate;
+                    delivery.IsActive = false;
+                    context.SaveChanges();
 
                     return true;
                 } catch (Exception ex)
