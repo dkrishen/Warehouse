@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WarehouseSimulation.ViewModels;
 
 namespace WarehouseSimulation.Views
 {
@@ -23,6 +24,14 @@ namespace WarehouseSimulation.Views
         public DeliveryInfoView()
         {
             InitializeComponent();
+        }
+
+        private void OnLoaded(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is DeliveryInfoViewModel deliveryInfoViewModel)
+            {
+                deliveryInfoViewModel.UpdateData();
+            }
         }
     }
 }

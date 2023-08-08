@@ -102,14 +102,44 @@ namespace WarehouseSimulation.Data
                     var product = context.Products.Single(r => r.Sku == productSku);
 
                     context.Products.Remove(product);
-                    context.SaveChanges();
 
+                    var racksProducts = context.RacksProducts
+                        .Where(rp => rp.ProductId == product.Id)
+                        .ToList();
+
+                    racksProducts.ForEach(rp =>
+                    {
+                        context.RacksProducts.Remove(rp);
+                    });
+
+                    context.SaveChanges();
                     return true;
                 }
                 catch (Exception ex)
                 {
                     return false;
                 }
+            }
+        }
+
+        public static IEnumerable<ProductViewDto> GetProductsCountInfoByDeliveryId(Guid deliveryId)
+        {
+            using (DatabaseContext context = new DatabaseContext())
+            {
+                return context.DeliveriesProducts
+                    .Include(dp => dp.Product)
+                    .ThenInclude(p => p.Type)
+                    .Where(p => p.DeliveryId == deliveryId)
+                    .Select(dp =>
+                        new ProductViewDto
+                        {
+                            Id = dp.Product.Id,
+                            Cost = dp.Product.Cost,
+                            SKU = dp.Product.Sku,
+                            Type = dp.Product.Type.TypeName,
+                            Count = dp.ProductCount
+                        })
+                    .ToList();
             }
         }
     }

@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using WarehouseSimulation.Core;
 using WarehouseSimulation.Core.Services;
+using WarehouseSimulation.Data;
+using WarehouseSimulation.Models.ViewModels;
 
 namespace WarehouseSimulation.ViewModels
 {
@@ -22,7 +22,26 @@ namespace WarehouseSimulation.ViewModels
             }
         }
 
+        private List<DeliveryViewDto> _AllDeliveries = DeliveryDataWorker.GetShortDeliveries().ToList();
+        public List<DeliveryViewDto> AllDeliveries
+        {
+            get { return _AllDeliveries; }
+            set
+            {
+                _AllDeliveries = value;
+                OnPropertyChanged("AllDeliveries");
+            }
+        }
+
+        private DeliveryViewDto _SelectedDelivery { get; set; }
+        public DeliveryViewDto SelectedDelivery
+        {
+            get { return _SelectedDelivery; }
+            set { _SelectedDelivery = value; GlobalVariables.SelectedDeliveryId = _SelectedDelivery?.DeliveryId; }
+        }
+
         public RelayCommand NavigateToAddDeliveryViewCommand { get; set; }
+        public RelayCommand NavigateToDeliveryInfoViewCommand { get; set; }
         public RelayCommand NavigateToPreviousViewCommand { get; set; }
 
         public DeliveriesViewModel(INavigationServices navService)
@@ -36,6 +55,20 @@ namespace WarehouseSimulation.ViewModels
             {
                 Navigation.NavigateTo<AddDeliveryViewModel>();
             }, canExecute: o => true);
+            NavigateToDeliveryInfoViewCommand = new RelayCommand(o =>
+            {
+                if(SelectedDelivery != null)
+                {
+                    GlobalVariables.SelectedDeliveryId = SelectedDelivery.DeliveryId;
+                    Navigation.NavigateTo<DeliveryInfoViewModel>();
+                }
+            }, canExecute: o => true);
+        }
+
+        public void UpdateData()
+        {
+            SelectedDelivery = null;
+            AllDeliveries = DeliveryDataWorker.GetShortDeliveries().ToList();
         }
     }
 }

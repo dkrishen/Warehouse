@@ -13,5 +13,13 @@ namespace WarehouseSimulation.Views
         {
             InitializeComponent();
         }
+
+        private void OnLoaded(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is DeliveriesViewModel DeliveriesViewModel)
+            {
+                DeliveriesViewModel.UpdateData();
+            }
+        }
     }
 }

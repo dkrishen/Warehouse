@@ -5,11 +5,11 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WarehouseSimulation.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="800"
+             Loaded="OnLoaded">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="3*"/>
-            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
@@ -26,32 +26,42 @@
                   Style="{StaticResource DataGridTheme}"
                   SelectionMode="Single"
                   IsReadOnly="True"
-                  ItemsSource="{Binding Dispatch, UpdateSourceTrigger=PropertyChanged}"
+                  SelectedItem="{Binding SelectedProductForRemove}"
+                  ItemsSource="{Binding AllProductsInDispatch, UpdateSourceTrigger=PropertyChanged}"
                   x:Name="DispatchDataGrid">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Product SKU" Width="1*"/>
-                <DataGridTextColumn Header="Count" Width="1*"/>
+                <DataGridTextColumn Header="SKU" Width="1*" Binding="{Binding SKU}"/>
+                <DataGridTextColumn Header="Cost" Width="1*" Binding="{Binding Cost}"/>
+                <DataGridTextColumn Header="Count" Width="1*" Binding="{Binding Count}"/>
             </DataGrid.Columns>
         </DataGrid>
         
         <ComboBox x:Name="ProductComboBox" 
-                  Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="3" 
+                  Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" 
+                  ItemsSource="{Binding AllNotAddedProducts, UpdateSourceTrigger=PropertyChanged}"
+                  SelectedItem="{Binding SelectedProductForAdd}"
                   Style="{StaticResource ComboBoxTheme}"/>
         <TextBox x:Name="CountTextBox" 
                  Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="3"
+                 Text="{Binding AddedProductCount}"
                  Style="{StaticResource TextBoxTheme}"/>
         <Button x:Name="BackButton" 
-                Grid.Column="1" Grid.Row="2" 
+                Grid.Column="2" Grid.Row="2" 
                 Content="Back"
                 Command="{Binding NavigateToPreviousViewCommand}"
                 Style="{StaticResource ButtonTheme}"/>
         <Button x:Name="AddButton" 
-                Grid.Column="2" Grid.Row="2" 
+                Grid.Column="1" Grid.Row="2" 
                 Content="Add"
                 Command="{Binding AddProductCommand}"
                 Style="{StaticResource ButtonTheme}"/>
+        <Button x:Name="RemoveButton" 
+                Grid.Column="1" Grid.Row="3" 
+                Content="Remove"
+                Command="{Binding RemoveProductCommand}"
+                Style="{StaticResource ButtonTheme}"/>
         <Button x:Name="SubmitButton" 
-                Grid.Column="3" Grid.Row="2" 
+                Grid.Column="2" Grid.Row="3" 
                 Content="Submit"
                 Command="{Binding AddDispatchCommand}"
                 Style="{StaticResource ButtonTheme}"/>

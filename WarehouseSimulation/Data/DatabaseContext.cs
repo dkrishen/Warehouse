@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 using WarehouseSimulation.Models.DatabaseModels;
 
 namespace WarehouseSimulation.Data;
@@ -33,8 +35,8 @@ public partial class DatabaseContext : DbContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=WAREHOUSE-DATABASE;TrustServerCertificate=True;Trusted_Connection=True;");
-    
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<DeliveriesProduct>(entity =>
         {
@@ -106,17 +108,16 @@ public partial class DatabaseContext : DbContext
 
         modelBuilder.Entity<RacksProduct>(entity =>
         {
-            entity.HasKey(e => new { e.RackId, e.ProductId });
-
-            entity.HasIndex(e => e.ProductId, "IX_RacksProducts_ProductId");
+            entity.Property(e => e.Id).ValueGeneratedNever();
 
             entity.HasOne(d => d.Product).WithMany(p => p.RacksProducts)
                 .HasForeignKey(d => d.ProductId)
-                .OnDelete(DeleteBehavior.ClientSetNull);
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_RacksProducts_Products");
 
             entity.HasOne(d => d.Rack).WithMany(p => p.RacksProducts)
                 .HasForeignKey(d => d.RackId)
-                .OnDelete(DeleteBehavior.ClientSetNull);
+                .HasConstraintName("FK_RacksProducts_Racks");
         });
 
         OnModelCreatingPartial(modelBuilder);

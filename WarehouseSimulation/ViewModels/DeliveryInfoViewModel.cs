@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WarehouseSimulation.Core.Services;
 using WarehouseSimulation.Core;
+using WarehouseSimulation.Data;
+using WarehouseSimulation.Models.ViewModels;
 
 namespace WarehouseSimulation.ViewModels
 {
@@ -21,29 +21,55 @@ namespace WarehouseSimulation.ViewModels
             }
         }
 
+        private List<ProductViewDto> _AllProducts { get; set; }
+        public List<ProductViewDto> AllProducts
+        {
+            get { return _AllProducts; }
+            set { _AllProducts = value; OnPropertyChanged("AllProducts"); }
+        }
+
         public RelayCommand RemoveDeliveryCommand { get; set; }
         public RelayCommand ApproveDeliveryCommand { get; set; }
         public RelayCommand NavigateToPreviousViewCommand { get; set; }
+        public Guid? DeliveryId { get; set; }
 
         public DeliveryInfoViewModel(INavigationServices navService)
         {
+            DeliveryId = GlobalVariables.SelectedDeliveryId;
             Navigation = navService;
+
             NavigateToPreviousViewCommand = new RelayCommand(o =>
             {
                 Navigation.ToBack();
             }, canExecute: o => true);
             ApproveDeliveryCommand = new RelayCommand(o =>
             {
-                // TODO:
-
-                NavigateToPreviousViewCommand.Execute(true);
+                if(DeliveryDataWorker.ApproveDelivery(DeliveryId ?? Guid.Empty))
+                {
+                    NavigateToPreviousViewCommand.Execute(true);
+                }
             }, canExecute: o => true);
             RemoveDeliveryCommand = new RelayCommand(o =>
             {
-                // TODO:
-
+                DeliveryDataWorker.RemoveDelivery(DeliveryId ?? Guid.Empty);
                 NavigateToPreviousViewCommand.Execute(true);
             }, canExecute: o => true);
+
+            if (DeliveryId == null)
+            {
+                NavigateToPreviousViewCommand.Execute(true);
+            }
+            else
+            {
+                AllProducts = DeliveryDataWorker.GetProductsByDeliveryId(DeliveryId ?? Guid.Empty).ToList();
+            }
+        }
+
+        public void UpdateData()
+        {
+            DeliveryId = GlobalVariables.SelectedDeliveryId;
+            AllProducts = DeliveryDataWorker.GetProductsByDeliveryId(DeliveryId ?? Guid.Empty).ToList();
+            GlobalVariables.SelectedDeliveryId = null;
         }
     }
 }

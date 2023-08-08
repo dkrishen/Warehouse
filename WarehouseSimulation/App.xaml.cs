@@ -25,7 +25,9 @@ namespace WarehouseSimulation
             });
             services.AddSingleton<MainViewModel>();
             services.AddSingleton<WarehouseViewModel>();
+            services.AddSingleton<DeliveryInfoViewModel>();
             services.AddSingleton<DeliveriesViewModel>();
+            services.AddSingleton<DispatchInfoViewModel>();
             services.AddSingleton<DispatchesViewModel>();
             services.AddSingleton<AddDeliveryViewModel>();
             services.AddSingleton<AddDispatchViewModel>();

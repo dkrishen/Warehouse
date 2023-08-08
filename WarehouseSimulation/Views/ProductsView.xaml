@@ -22,7 +22,6 @@
             <RowDefinition Height="50"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-
         <DataGrid Grid.Column="0" Grid.RowSpan="5" Grid.Row="0"
                   AutoGenerateColumns="False"
                   Style="{StaticResource DataGridTheme}"

@@ -23,7 +23,7 @@ namespace WarehouseSimulation.ViewModels
         private List<ProductViewDto> _AllProducts = ProductDataWorker.GetShortProducts().ToList();
         public List<ProductViewDto> AllProducts
         {
-            get { return _AllProducts; }
+            get { return _AllProducts; }    
             set { _AllProducts = value; OnPropertyChanged("AllProducts"); }
         }
 

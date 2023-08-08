@@ -18,6 +18,14 @@
                 <view:DispatchesView/>
             </DataTemplate>
 
+            <DataTemplate DataType="{x:Type TypeName=viewModel:DeliveryInfoViewModel}">
+                <view:DeliveryInfoView/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type TypeName=viewModel:DispatchInfoViewModel}">
+                <view:DispatchInfoView/>
+            </DataTemplate>
+
             <DataTemplate DataType="{x:Type TypeName=viewModel:AddDeliveryViewModel}">
                 <view:AddDeliveryView/>
             </DataTemplate>
