@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using WarehouseSimulation.Models.CoreModels;
 using WarehouseSimulation.Models.DatabaseModels;
 using WarehouseSimulation.Models.ViewModels;
 
@@ -132,6 +133,25 @@ namespace WarehouseSimulation.Data
             }
         }
 
+        public static int GetProductsCountInSump(string productSku)
+        {
+            using (DatabaseContext context = new DatabaseContext())
+            {
+                var sump = context.RacksProducts
+                    .Include(rp => rp.Product)
+                    .FirstOrDefault(rp => rp.RackId == null && rp.Product.Sku == productSku);
+
+                if(sump == null)
+                {
+                    return 0;
+                }
+                else
+                {
+                    return sump.ProductCount;
+                }
+            }
+        }
+
         public static bool TakeProductFromRack(string productSKU, int rackNumber, int count)
         {
             using (DatabaseContext context = new DatabaseContext())
@@ -207,8 +227,8 @@ namespace WarehouseSimulation.Data
             using (DatabaseContext context = new DatabaseContext())
             {
                 var racksProducts = context.RacksProducts
-                    .Include(rp => rp.Rack)
                     .Where(rp => rp.RackId == rackId)
+                    .Include(rp => rp.Rack)
                     .ToList();
 
                 if (racksProducts.Count == 0)
@@ -232,13 +252,24 @@ namespace WarehouseSimulation.Data
                     var product = context.Products.Single(p => p.Sku == productSKU);
                     var rack = context.Racks.Single(r => r.Number == rackNumber);
 
-                    context.RacksProducts.Add(new RacksProduct
+                    var rackProduct = context.RacksProducts
+                        .FirstOrDefault(rp => rp.RackId != null 
+                            && rp.RackId == rack.Id 
+                            && rp.ProductId == product.Id);
+
+                    if (rackProduct == null) {
+                        context.RacksProducts.Add(new RacksProduct
+                        {
+                            RackId = rack.Id,
+                            ProductId = product.Id,
+                            ProductCount = count,
+                            Id = Guid.NewGuid()
+                        });
+                    }
+                    else
                     {
-                        RackId = rack.Id,
-                        ProductId = product.Id,
-                        ProductCount = count,
-                        Id = Guid.NewGuid()
-                    });
+                        rackProduct.ProductCount += count;
+                    }
 
                     context.SaveChanges();
                     return true;
@@ -279,6 +310,45 @@ namespace WarehouseSimulation.Data
                 }
                 catch (Exception ex) { }
                 return false;
+            }
+        }
+
+        public static OperationDto CheckSump()
+        {
+            using (DatabaseContext context = new DatabaseContext())
+            {
+                var result = new OperationDto();
+
+                var sumps = context.RacksProducts
+                    .Where(rp => rp.RackId == null)
+                    .Include(rp => rp.Product)
+                    .ThenInclude(p => p.Type)
+                    .ToList();
+
+                sumps.ForEach(sump =>
+                {
+                    var racks = GetIncompleteRacksByTypes(new HashSet<string> { sump.Product.Type.TypeName });
+
+                    racks.Where(rack => rack.Type == sump.Product.Type.TypeName)
+                        .ToList()
+                        .ForEach(rack =>
+                        {
+                            if (sump.ProductCount > 0)
+                            {
+                                var freeSpace = GetFreeSpaceAmountInRack(rack.Number);
+                                var delta = Math.Min(sump.ProductCount, freeSpace);
+
+                                sump.ProductCount -= delta;
+                                PutProductOnRack(sump.Product.Sku, rack.Number, delta);
+
+                                result.Tags.Add($"{delta} {sump.Product.Sku} moved to {rack.Number} Rack;");
+                                result.IsSuccessfully = true;
+                            }
+                        });
+                });
+
+                context.SaveChanges();
+                return result;
             }
         }
     }

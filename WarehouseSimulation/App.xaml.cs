@@ -34,6 +34,7 @@ namespace WarehouseSimulation
             services.AddSingleton<TypesViewModel>();
             services.AddSingleton<RacksViewModel>();
             services.AddSingleton<ProductsViewModel>();
+            services.AddSingleton<ProductLocaionInfoViewModel>();
             services.AddSingleton<INavigationServices, NavigationServices>();
 
             services.AddSingleton<Func<Type, ViewModelBase>>(serviceProvider => viewModelType => (ViewModelBase)serviceProvider.GetRequiredService(viewModelType));

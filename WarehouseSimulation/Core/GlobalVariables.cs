@@ -10,5 +10,8 @@ namespace WarehouseSimulation.Core
     {
         public static Guid? SelectedDeliveryId { get; set; }
         public static Guid? SelectedDispatchId { get; set; }
+        public static string? SelectedProductSku { get; set; }
+
+        public const string SumpTitle = "Отстойник";
     }
 }

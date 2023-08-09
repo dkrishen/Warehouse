@@ -6,6 +6,7 @@ using WarehouseSimulation.Data;
 using WarehouseSimulation.Models.ViewModels;
 using WarehouseSimulation.Models.DatabaseModels;
 using System.Linq;
+using System.Windows;
 
 namespace WarehouseSimulation.ViewModels
 {
@@ -46,6 +47,12 @@ namespace WarehouseSimulation.ViewModels
             {
                 if (DispatchDataWorker.ApproveDispatch(DispatchId ?? Guid.Empty, DateTime.UtcNow))
                 {
+                    var result = RackDataWorker.CheckSump();
+                    if (result.IsSuccessfully)
+                    {
+                        MessageBox.Show(string.Join("\n", result.Tags));
+                    }
+
                     NavigateToPreviousViewCommand.Execute(true);
                 }
             }, canExecute: o => true);

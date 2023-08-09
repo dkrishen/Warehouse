@@ -21,10 +21,18 @@ namespace WarehouseSimulation.ViewModels
             }
         }
 
+        private ProductViewDto _SelectedProduct { get; set; }
+        public ProductViewDto SelectedProduct
+        {
+            get { return _SelectedProduct; }
+            set { _SelectedProduct = value; GlobalVariables.SelectedProductSku = _SelectedProduct?.SKU; }
+        }
+
         public RelayCommand NavigateToDeliveriesViewCommand { get; set; }
         public RelayCommand NavigateToDispatchesViewCommand { get; set; }
         public RelayCommand NavigateToRacksViewCommand { get; set; }
         public RelayCommand NavigateToProductsViewCommand { get; set; }
+        public RelayCommand NavigateToLocationsViewCommand { get; set; }
 
         public WarehouseViewModel(INavigationServices navService)
         {
@@ -44,6 +52,14 @@ namespace WarehouseSimulation.ViewModels
             NavigateToProductsViewCommand = new RelayCommand(o =>
             {
                 Navigation.NavigateTo<ProductsViewModel>();
+            }, canExecute: o => true);
+            NavigateToLocationsViewCommand = new RelayCommand(o =>
+            {
+                if (SelectedProduct != null)
+                {
+                    GlobalVariables.SelectedProductSku = SelectedProduct.SKU;
+                    Navigation.NavigateTo<ProductLocaionInfoViewModel>();
+                }
             }, canExecute: o => true);
         }
 

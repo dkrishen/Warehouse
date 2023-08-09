@@ -4,6 +4,7 @@ using WarehouseSimulation.Core.Services;
 using WarehouseSimulation.Core;
 using WarehouseSimulation.Data;
 using WarehouseSimulation.Models.ViewModels;
+using System.Windows;
 
 namespace WarehouseSimulation.ViewModels
 {
@@ -74,6 +75,12 @@ namespace WarehouseSimulation.ViewModels
                         }))
                     {
                         AllRacks = RackDataWorker.GetRacks().ToList();
+
+                        var result = RackDataWorker.CheckSump();
+                        if (result.IsSuccessfully)
+                        {
+                            MessageBox.Show(string.Join("\n", result.Tags));
+                        }
                     }
                 } catch { }
             }, canExecute: o => true);
