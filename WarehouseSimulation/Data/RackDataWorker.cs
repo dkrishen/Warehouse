@@ -59,11 +59,15 @@ namespace WarehouseSimulation.Data
             }
         }
 
-        public static OperationDto RemoveRack(int rackNumber)
+        public static OperationDto RemoveRack(int rackNumber, OperationDto result = null)
         {
             using (DatabaseContext context = new DatabaseContext())
             {
-                var result = new OperationDto();
+                if (result == null)
+                {
+                    result = new OperationDto();
+                }
+
                 try
                 {
                     var rack = context.Racks.Single(r => r.Number == rackNumber);
@@ -367,11 +371,14 @@ namespace WarehouseSimulation.Data
             }
         }
 
-        public static OperationDto CheckSump()
+        public static OperationDto CheckSump(OperationDto result = null)
         {
             using (DatabaseContext context = new DatabaseContext())
             {
-                var result = new OperationDto();
+                if (result == null)
+                {
+                    result = new OperationDto();
+                }
 
                 var sumps = context.RacksProducts
                     .Where(rp => rp.RackId == null)

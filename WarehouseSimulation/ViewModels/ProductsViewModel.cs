@@ -38,6 +38,7 @@ namespace WarehouseSimulation.ViewModels
         public string SelectedType { get; set; }
         public string NewProductSku { get; set; }
         public string NewProductCost { get; set; }
+        public string NewProductRecommendedAmount { get; set; }
 
         public RelayCommand NavigateToPreviousViewCommand { get; set; }
         public RelayCommand NavigateToTypesViewCommand { get; set; }
@@ -60,6 +61,7 @@ namespace WarehouseSimulation.ViewModels
                 try
                 {
                     var newCost = int.Parse(NewProductCost);
+                    var NewRecommendedAmount = int.Parse(NewProductRecommendedAmount);
 
                     if (SelectedType != null
                         && NewProductSku != null
@@ -69,7 +71,8 @@ namespace WarehouseSimulation.ViewModels
                         {
                             SKU = NewProductSku,
                             Cost = newCost,
-                            Type = SelectedType
+                            Type = SelectedType,
+                            RecommendedAmount = NewRecommendedAmount
                         }))
                     {
                         AllProducts = ProductDataWorker.GetShortProducts().ToList();

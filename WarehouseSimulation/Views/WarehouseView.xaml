@@ -59,6 +59,7 @@
                 <DataGridTextColumn Header="SKU"   Width="2*" Binding="{Binding Path=SKU}"/>
                 <DataGridTextColumn Header="Type"  Width="2*" Binding="{Binding Path=Type}"/>
                 <DataGridTextColumn Header="Cost"  Width="1*" Binding="{Binding Path=Cost}"/>
+                <DataGridTextColumn Header="Recommended"  Width="1*" Binding="{Binding Path=RecommendedAmount}"/>
                 <DataGridTextColumn Header="Count" Width="1*" Binding="{Binding Path=Count}"/>
             </DataGrid.Columns>
         </DataGrid>

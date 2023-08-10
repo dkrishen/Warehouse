@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WarehouseSimulation.Models.CoreModels;
 using WarehouseSimulation.Models.DatabaseModels;
 using WarehouseSimulation.Models.ViewModels;
 
@@ -110,10 +111,15 @@ namespace WarehouseSimulation.Data
             }
         }
 
-        public static bool ApproveDelivery(Guid deliveryId, DateTime approvalDate)
+        public static OperationDto ApproveDelivery(Guid deliveryId, DateTime approvalDate, OperationDto result = null)
         {
             using (DatabaseContext context = new DatabaseContext())
             {
+                if (result == null)
+                {
+                    result = new OperationDto();
+                }
+
                 try
                 {
                     var products = ProductDataWorker.GetProductsCountInfoByDeliveryId(deliveryId).ToList();
@@ -121,6 +127,8 @@ namespace WarehouseSimulation.Data
 
                     products.ForEach(product =>
                     {
+                        var isEnoughBefore = ProductDataWorker.GetProductCountByProductId(product.Id) > product.RecommendedAmount;
+
                         do
                         {
                             var rack = racks.FirstOrDefault(r => r.Type == product.Type);
@@ -143,6 +151,14 @@ namespace WarehouseSimulation.Data
                             }
 
                             RackDataWorker.PutProductOnRack(product.SKU, rack.Number, delta);
+
+                            var isEnoughAfter = ProductDataWorker.GetProductCountByProductId(product.Id) > product.RecommendedAmount;
+
+                            if(isEnoughBefore != isEnoughAfter)
+                            {
+                                result.Tags.Add($"{product.SKU} has reached the recommended amount;");
+                                result.IsRequiredNotification = true;
+                            }
                         } while (product.Count > 0);
                     });
 
@@ -151,11 +167,13 @@ namespace WarehouseSimulation.Data
                     delivery.IsActive = false;
                     context.SaveChanges();
 
-                    return true;
+                    result.IsSuccessfully = true;
                 } catch (Exception ex)
                 {
-                    return false;
+                    result.IsSuccessfully = false;
                 }
+
+                return result;
             }
         }
     }

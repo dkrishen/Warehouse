@@ -13,6 +13,8 @@ public partial class Product
 
     public float Cost { get; set; }
 
+    public int RecommendedAmount { get; set; }
+
     public virtual ICollection<DeliveriesProduct> DeliveriesProducts { get; set; } = new List<DeliveriesProduct>();
 
     public virtual ICollection<DispatchesProduct> DispatchesProducts { get; set; } = new List<DispatchesProduct>();

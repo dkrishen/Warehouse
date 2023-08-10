@@ -3,6 +3,7 @@ using Microsoft.Identity.Client;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using WarehouseSimulation.Models.CoreModels;
 using WarehouseSimulation.Models.DatabaseModels;
 using WarehouseSimulation.Models.ViewModels;
 
@@ -129,10 +130,15 @@ namespace WarehouseSimulation.Data
             }
         }
 
-        public static bool ApproveDispatch(Guid dispatchId, DateTime approvalDate)
+        public static OperationDto ApproveDispatch(Guid dispatchId, DateTime approvalDate, OperationDto result = null)
         {
             using (DatabaseContext context = new DatabaseContext())
             {
+                if (result == null)
+                {
+                    result = new OperationDto();
+                }
+
                 try
                 {
                     var products = ProductDataWorker.GetProductsCountInfoByDispatchId(dispatchId).ToList();
@@ -151,6 +157,8 @@ namespace WarehouseSimulation.Data
                     {
                         products.ForEach(product =>
                         {
+                            var isEnoughBefore = ProductDataWorker.GetProductCountByProductId(product.Id) > product.RecommendedAmount;
+
                             var racks = RackDataWorker.GetRacksByProduct(product.SKU).ToList();
                             
                             racks.ForEach(rack =>
@@ -171,11 +179,19 @@ namespace WarehouseSimulation.Data
                             {
                                 RackDataWorker.TakeProductFromSump(product.SKU, product.Count);
                             }
+
+                            var isEnoughAfter = ProductDataWorker.GetProductCountByProductId(product.Id) > product.RecommendedAmount;
+
+                            if (isEnoughBefore != isEnoughAfter)
+                            {
+                                result.Tags.Add($"{product.SKU} fell below the recommended amount;");
+                                result.IsRequiredNotification = true;
+                            }
                         });
                     }
                     else
                     {
-                        return false;
+                        result.IsSuccessfully = false;
                     }
 
                     var dispatch = context.Dispatches.Single(d => d.Id == dispatchId);
@@ -183,12 +199,14 @@ namespace WarehouseSimulation.Data
                     dispatch.IsActive = false;
                     context.SaveChanges();
 
-                    return true;
+                    result.IsSuccessfully = true;
                 }
                 catch (Exception ex)
                 {
-                    return false;
+                    result.IsSuccessfully = false;
                 }
+
+                return result;
             }
         }
     }

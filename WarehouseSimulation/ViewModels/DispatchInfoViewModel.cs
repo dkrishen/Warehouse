@@ -45,9 +45,10 @@ namespace WarehouseSimulation.ViewModels
             }, canExecute: o => true);
             ApproveDispatchCommand = new RelayCommand(o =>
             {
-                if (DispatchDataWorker.ApproveDispatch(DispatchId ?? Guid.Empty, DateTime.UtcNow))
+                var result = DispatchDataWorker.ApproveDispatch(DispatchId ?? Guid.Empty, DateTime.UtcNow);
+                if (result.IsSuccessfully)
                 {
-                    var result = RackDataWorker.CheckSump();
+                    result = RackDataWorker.CheckSump(result);
                     result.Show();
 
                     NavigateToPreviousViewCommand.Execute(true);

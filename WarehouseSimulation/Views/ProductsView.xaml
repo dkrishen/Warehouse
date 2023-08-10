@@ -20,6 +20,7 @@
             <RowDefinition Height="50"/>
             <RowDefinition Height="50"/>
             <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <DataGrid Grid.Column="0" Grid.RowSpan="5" Grid.Row="0"
@@ -33,6 +34,7 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Header="SKU" Width="2*" Binding="{Binding SKU}"/>
                 <DataGridTextColumn Header="Type" Width="2*" Binding="{Binding Type}"/>
+                <DataGridTextColumn Header="Recommended" Width="1*" Binding="{Binding RecommendedAmount}"/>
                 <DataGridTextColumn Header="Cost" Width="1*" Binding="{Binding Cost}"/>
             </DataGrid.Columns>
         </DataGrid>
@@ -55,23 +57,29 @@
                  Text="{Binding NewProductCost}"
                  Tag="Product Cost"
                  Style="{StaticResource TextBoxTheme}"/>
+        <TextBox x:Name="RecommendedAmountInputTextBox" 
+                 Template="{DynamicResource PlaceholderedTextBoxTheme}" 
+                 Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="4"
+                 Text="{Binding NewProductRecommendedAmount}"
+                 Tag="Recommended Amount"
+                 Style="{StaticResource TextBoxTheme}"/>
         <Button x:Name="BackButton" 
-                Grid.Column="1" Grid.Row="3" 
+                Grid.Column="1" Grid.Row="4" 
                 Content="Back"
                 Command="{Binding NavigateToPreviousViewCommand}"
                 Style="{StaticResource ButtonTheme}"/>
         <Button x:Name="AddButton" 
-                Grid.Column="2" Grid.Row="3" 
+                Grid.Column="2" Grid.Row="4" 
                 Content="Add"
                 Command="{Binding AddProductCommand}"
                 Style="{StaticResource ButtonTheme}"/>
         <Button x:Name="RemoveButton" 
-                Grid.Column="3" Grid.Row="3" 
+                Grid.Column="3" Grid.Row="4" 
                 Content="Remove"
                 Command="{Binding RemoveProductCommand}"
                 Style="{StaticResource ButtonTheme}"/>
         <Button x:Name="TypesButton" 
-                Grid.Column="4" Grid.Row="3" 
+                Grid.Column="4" Grid.Row="4" 
                 Content="Types"
                 Command="{Binding NavigateToTypesViewCommand}"
                 Style="{StaticResource ButtonTheme}"/>

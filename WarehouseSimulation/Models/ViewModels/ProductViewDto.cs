@@ -9,5 +9,6 @@ namespace WarehouseSimulation.Models.ViewModels
         public string Type { get; set; }
         public float Cost { get; set; }
         public int Count { get; set; }
+        public int RecommendedAmount { get; set; }
     }
 }

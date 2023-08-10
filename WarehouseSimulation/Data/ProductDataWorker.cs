@@ -18,7 +18,7 @@ namespace WarehouseSimulation.Data
                 return context.Products
                     .Include(p => p.RacksProducts)
                     .Include(p => p.Type)
-                    .GroupBy(p => new { p.Id, p.Sku, p.Cost, p.Type.TypeName })
+                    .GroupBy(p => new { p.Id, p.Sku, p.Cost, p.Type.TypeName, p.RecommendedAmount })
                     .Select(p =>
                         new ProductViewDto
                         {
@@ -26,6 +26,7 @@ namespace WarehouseSimulation.Data
                             Cost = p.Key.Cost,
                             SKU = p.Key.Sku,
                             Type = p.Key.TypeName,
+                            RecommendedAmount = p.Key.RecommendedAmount,
                             Count = GetProductCountByProductId(p.Key.Id)
                         })
                     .ToList()
@@ -47,6 +48,7 @@ namespace WarehouseSimulation.Data
                             Cost = p.Cost,
                             SKU = p.Sku,
                             Type = p.Type.TypeName,
+                            RecommendedAmount = p.RecommendedAmount,
                             Count = 0
                         })
                     .ToList();
@@ -81,7 +83,8 @@ namespace WarehouseSimulation.Data
                             Id = Guid.NewGuid(),
                             TypeId = typeId,
                             Cost = newProduct.Cost,
-                            Sku = newProduct.SKU
+                            Sku = newProduct.SKU,
+                            RecommendedAmount = newProduct.RecommendedAmount
                         });
                         context.SaveChanges();
                         return true;
@@ -139,7 +142,8 @@ namespace WarehouseSimulation.Data
                             Cost = dp.Product.Cost,
                             SKU = dp.Product.Sku,
                             Type = dp.Product.Type.TypeName,
-                            Count = dp.ProductCount
+                            Count = dp.ProductCount,
+                            RecommendedAmount = dp.Product.RecommendedAmount
                         })
                     .ToList();
             }
@@ -160,7 +164,8 @@ namespace WarehouseSimulation.Data
                             Cost = dp.Product.Cost,
                             SKU = dp.Product.Sku,
                             Type = dp.Product.Type.TypeName,
-                            Count = dp.ProductCount
+                            Count = dp.ProductCount,
+                            RecommendedAmount = dp.Product.RecommendedAmount
                         })
                     .ToList();
             }
