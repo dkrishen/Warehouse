@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using WarehouseSimulation.Core;
 using WarehouseSimulation.Models.CoreModels;
 using WarehouseSimulation.Models.DatabaseModels;
 using WarehouseSimulation.Models.ViewModels;
@@ -58,23 +59,76 @@ namespace WarehouseSimulation.Data
             }
         }
 
-        public static bool RemoveRack(int rackNumber)
+        public static OperationDto RemoveRack(int rackNumber)
         {
             using (DatabaseContext context = new DatabaseContext())
             {
+                var result = new OperationDto();
                 try
                 {
                     var rack = context.Racks.Single(r => r.Number == rackNumber);
 
-                    context.Racks.Remove(rack);
+                    var products = GetProductsByRack(rackNumber).ToList();
+
+                    products.ForEach(product =>
+                    {
+                        var racks = GetIncompleteRacksByTypes(new HashSet<string> { product.Product.Type.TypeName })
+                            .Where(r => r.Number != rackNumber)
+                            .ToList();
+
+                        racks.Where(rack => rack.Type == product.Product.Type.TypeName)
+                            .ToList()
+                            .ForEach(rack =>
+                            {
+                                if (product.ProductCount > 0)
+                                {
+                                    var freeSpace = GetFreeSpaceAmountInRack(rack.Number);
+                                    var delta = Math.Min(product.ProductCount, freeSpace);
+
+                                    product.ProductCount -= delta;
+                                    PutProductOnRack(product.Product.Sku, rack.Number, delta);
+
+                                    result.Tags.Add($"{delta} {product.Product.Sku} moved to {rack.Number} Rack;");
+                                    result.IsRequiredNotification = true;
+                                }
+                            });
+
+                        if(product.ProductCount > 0)
+                        {
+                            PutProductOnSump(product.Product.Sku, product.ProductCount);
+                            result.Tags.Add($"{product.ProductCount} {product.Product.Sku} moved to {GlobalVariables.SumpTitle}");
+                            result.IsRequiredNotification = true;
+                        }
+
+                        context.RacksProducts.Remove(context.RacksProducts.Single(rp => rp.Id == product.Id));
+                    });
+                    context.SaveChanges();
+                    context.Racks.Remove(context.Racks.Single(r => r.Number == rack.Number));
                     context.SaveChanges();
 
-                    return true;
+
+                    result.IsSuccessfully = true;
                 }
                 catch (Exception ex)
                 {
-                    return false;
+                    result.IsSuccessfully = false;
                 }
+
+                return result;
+            }
+        }
+
+        public static IEnumerable<RacksProduct> GetProductsByRack(int rackNumber)
+        {
+            using (DatabaseContext context = new DatabaseContext())
+            {
+                return context.RacksProducts
+                    .Where(rp => rp.RackId != null)
+                    .Include(rp => rp.Product)
+                    .ThenInclude(p => p.Type)
+                    .Include(rp => rp.Rack)
+                    .Where(p => p.Rack.Number == rackNumber)
+                    .ToList();
             }
         }
 
@@ -342,12 +396,13 @@ namespace WarehouseSimulation.Data
                                 PutProductOnRack(sump.Product.Sku, rack.Number, delta);
 
                                 result.Tags.Add($"{delta} {sump.Product.Sku} moved to {rack.Number} Rack;");
-                                result.IsSuccessfully = true;
+                                result.IsRequiredNotification = true;
                             }
                         });
                 });
 
                 context.SaveChanges();
+                result.IsSuccessfully = true;
                 return result;
             }
         }

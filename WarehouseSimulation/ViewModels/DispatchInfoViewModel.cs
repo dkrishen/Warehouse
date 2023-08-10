@@ -48,10 +48,7 @@ namespace WarehouseSimulation.ViewModels
                 if (DispatchDataWorker.ApproveDispatch(DispatchId ?? Guid.Empty, DateTime.UtcNow))
                 {
                     var result = RackDataWorker.CheckSump();
-                    if (result.IsSuccessfully)
-                    {
-                        MessageBox.Show(string.Join("\n", result.Tags));
-                    }
+                    result.Show();
 
                     NavigateToPreviousViewCommand.Execute(true);
                 }
