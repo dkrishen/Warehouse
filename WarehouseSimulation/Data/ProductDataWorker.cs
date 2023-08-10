@@ -28,6 +28,8 @@ namespace WarehouseSimulation.Data
                             Type = p.Key.TypeName,
                             Count = GetProductCountByProductId(p.Key.Id)
                         })
+                    .ToList()
+                    .Where(p => p.Count > 0)
                     .ToList();
             }
         }

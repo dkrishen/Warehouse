@@ -34,9 +34,11 @@
         </DataGrid>
 
         <TextBox x:Name="TypeInputTextBox" 
-                 Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="3" 
+                 Template="{DynamicResource PlaceholderedTextBoxTheme}" 
                  Text="{Binding NewType}"
-                Style="{StaticResource TextBoxTheme}"/>
+                 Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="3" 
+                 Tag="Type Name"
+                 Style="{StaticResource TextBoxTheme}"/>
         <Button x:Name="BackButton" 
                 Grid.Column="1" Grid.Row="1" 
                 Content="Back"

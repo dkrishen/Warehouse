@@ -43,13 +43,17 @@
                   SelectedItem="{Binding SelectedType}"
                   ItemsSource="{Binding AllTypes}"
                   Style="{StaticResource ComboBoxTheme}"/>
-        <TextBox x:Name="SkuInputTextBox" 
+        <TextBox Template="{DynamicResource PlaceholderedTextBoxTheme}" 
+                 x:Name="SkuInputTextBox" 
                  Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="4"
                  Text="{Binding NewProductSku}"
+                 Tag="Product SKU"
                  Style="{StaticResource TextBoxTheme}"/>
         <TextBox x:Name="CostInputTextBox" 
+                 Template="{DynamicResource PlaceholderedTextBoxTheme}" 
                  Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="4"
                  Text="{Binding NewProductCost}"
+                 Tag="Product Cost"
                  Style="{StaticResource TextBoxTheme}"/>
         <Button x:Name="BackButton" 
                 Grid.Column="1" Grid.Row="3" 

@@ -44,10 +44,14 @@
                 SelectedItem="{Binding SelectedType}"
                 Style="{StaticResource ComboBoxTheme}"/>
         <TextBox x:Name="SizeInputTextBox" 
+                 Template="{DynamicResource PlaceholderedTextBoxTheme}" 
+                 Tag="Rack Size"
                  Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="4"
                  Text="{Binding NewRackSize}"
                  Style="{StaticResource TextBoxTheme}"/>
         <TextBox x:Name="NumberInputTextBox" 
+                 Template="{DynamicResource PlaceholderedTextBoxTheme}" 
+                 Tag="Rack Number"
                  Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="4"
                  Text="{Binding NewRackNumber}"
                  Style="{StaticResource TextBoxTheme}"/>

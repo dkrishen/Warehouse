@@ -42,6 +42,8 @@
                   SelectedItem="{Binding SelectedProductForAdd}"
                   Style="{StaticResource ComboBoxTheme}"/>
         <TextBox x:Name="CountTextBox" 
+                 Tag="Product Count"
+                 Template="{DynamicResource PlaceholderedTextBoxTheme}" 
                  Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="3"
                  Text="{Binding AddedProductCount}"
                  Style="{StaticResource TextBoxTheme}"/>
