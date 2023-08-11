@@ -23,6 +23,17 @@ namespace WarehouseSimulation.ViewModels
             }
         }
 
+        private IDateService _DateService;
+        public IDateService DateService
+        {
+            get => _DateService;
+            set
+            {
+                _DateService = value;
+                OnPropertyChanged();
+            }
+        }
+
         private List<ProductViewDto> _AllProducts { get; set; }
         public List<ProductViewDto> AllProducts
         {
@@ -35,17 +46,20 @@ namespace WarehouseSimulation.ViewModels
         public RelayCommand NavigateToPreviousViewCommand { get; set; }
         public Guid? DispatchId { get; set; }
 
-        public DispatchInfoViewModel(INavigationServices navService)
+        public DispatchInfoViewModel(INavigationServices navService, IDateService dateService)
         {
             DispatchId = GlobalVariables.SelectedDispatchId;
             Navigation = navService;
+            DateService = dateService;
             NavigateToPreviousViewCommand = new RelayCommand(o =>
             {
                 Navigation.ToBack();
             }, canExecute: o => true);
             ApproveDispatchCommand = new RelayCommand(o =>
             {
-                var result = DispatchDataWorker.ApproveDispatch(DispatchId ?? Guid.Empty, DateTime.UtcNow);
+                var result = DispatchDataWorker.ApproveDispatch(DispatchId ?? Guid.Empty, DateService.CurrentDate);
+                DateService.NextDay();
+
                 if (result.IsSuccessfully)
                 {
                     result = RackDataWorker.CheckSump(result);

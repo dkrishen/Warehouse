@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:WarehouseSimulation.Views"
         mc:Ignorable="d"
         Height="450" Width="800">
-    <Grid>
+    <Grid Margin="0 0 0 30">
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
             <RowDefinition Height="*"/>
@@ -63,5 +63,15 @@
                 <DataGridTextColumn Header="Count" Width="1*" Binding="{Binding Path=Count}"/>
             </DataGrid.Columns>
         </DataGrid>
+
+        <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="5"
+                    Orientation="Horizontal">
+                <Label Content="{Binding Path=DateService.CurrentDate}"
+                       Style="{StaticResource DateLabelTheme}"/>
+                <Button x:Name="NextDayButton" 
+                        Content="Next Day" 
+                        Command="{Binding NextDayViewCommand}"
+                        Style="{StaticResource ButtonTheme}"/>
+        </StackPanel>
     </Grid>
 </UserControl>

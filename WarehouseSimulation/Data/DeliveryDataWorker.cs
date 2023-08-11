@@ -128,7 +128,6 @@ namespace WarehouseSimulation.Data
                     products.ForEach(product =>
                     {
                         var isEnoughBefore = ProductDataWorker.GetProductCountByProductId(product.Id) > product.RecommendedAmount;
-
                         do
                         {
                             var rack = racks.FirstOrDefault(r => r.Type == product.Type);
@@ -137,29 +136,31 @@ namespace WarehouseSimulation.Data
                                 RackDataWorker.PutProductOnSump(product.SKU, product.Count);
                                 break;
                             }
-                            var delta = Math.Min(rack.FreeSpace, product.Count);
-
-                            product.Count -= delta;
-
-                            if (rack.FreeSpace - delta > 0)
-                            {
-                                racks.Single(r => r.Number == rack.Number).FreeSpace -= delta;
-                            }
                             else
                             {
-                                racks.Remove(rack);
-                            }
+                                var delta = Math.Min(rack.FreeSpace, product.Count);
 
-                            RackDataWorker.PutProductOnRack(product.SKU, rack.Number, delta);
+                                product.Count -= delta;
 
-                            var isEnoughAfter = ProductDataWorker.GetProductCountByProductId(product.Id) > product.RecommendedAmount;
+                                if (rack.FreeSpace - delta > 0)
+                                {
+                                    racks.Single(r => r.Number == rack.Number).FreeSpace -= delta;
+                                }
+                                else
+                                {
+                                    racks.Remove(rack);
+                                }
 
-                            if(isEnoughBefore != isEnoughAfter)
-                            {
-                                result.Tags.Add($"{product.SKU} has reached the recommended amount;");
-                                result.IsRequiredNotification = true;
+                                RackDataWorker.PutProductOnRack(product.SKU, rack.Number, delta);
                             }
                         } while (product.Count > 0);
+
+                        var isEnoughAfter = ProductDataWorker.GetProductCountByProductId(product.Id) > product.RecommendedAmount;
+                        if (isEnoughBefore != isEnoughAfter)
+                        {
+                            result.Tags.Add($"{product.SKU} has reached the recommended amount;");
+                            result.IsRequiredNotification = true;
+                        }
                     });
 
                     var delivery = context.Deliveries.Single(d => d.Id == deliveryId);
@@ -174,6 +175,14 @@ namespace WarehouseSimulation.Data
                 }
 
                 return result;
+            }
+        }
+
+        public static IEnumerable<Delivery> GetAllDeliveries()
+        {
+            using (DatabaseContext context = new DatabaseContext())
+            {
+                return context.Deliveries.ToList();
             }
         }
     }

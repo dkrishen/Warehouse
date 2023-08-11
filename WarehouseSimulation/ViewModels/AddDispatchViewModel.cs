@@ -21,6 +21,17 @@ namespace WarehouseSimulation.ViewModels
             }
         }
 
+        private IDateService _DateService;
+        public IDateService DateService
+        {
+            get => _DateService;
+            set
+            {
+                _DateService = value;
+                OnPropertyChanged();
+            }
+        }
+
         private List<ProductViewDto> _AllProducts = ProductDataWorker.GetShortProducts().ToList();
         public List<ProductViewDto> AllProducts
         {
@@ -67,9 +78,10 @@ namespace WarehouseSimulation.ViewModels
         public RelayCommand RemoveProductCommand { get; set; }
         public RelayCommand AddDispatchCommand { get; set; }
 
-        public AddDispatchViewModel(INavigationServices navService)
+        public AddDispatchViewModel(INavigationServices navService, IDateService dateService)
         {
             Navigation = navService;
+            DateService = dateService;
             NavigateToPreviousViewCommand = new RelayCommand(o =>
             {
                 Navigation.ToBack();
@@ -114,8 +126,9 @@ namespace WarehouseSimulation.ViewModels
             AddDispatchCommand = new RelayCommand(o =>
             {
                 if (AllProductsInDispatch.Count != 0
-                    && DispatchDataWorker.CreateDispatch(AllProductsInDispatch, DateTime.UtcNow))
+                    && DispatchDataWorker.CreateDispatch(AllProductsInDispatch, DateService.CurrentDate))
                 {
+                    DateService.NextDay();
                     AllProductsInDispatch.Clear();
                     SelectedProductForAdd = null;
                     AddedProductCount = null;

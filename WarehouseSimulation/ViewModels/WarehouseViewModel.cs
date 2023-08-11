@@ -20,6 +20,17 @@ namespace WarehouseSimulation.ViewModels
                 OnPropertyChanged();
             }
         }
+        
+        private IDateService _DateService;
+        public IDateService DateService
+        {
+            get => _DateService;
+            set
+            {
+                _DateService = value;
+                OnPropertyChanged();
+            }
+        }
 
         private ProductViewDto _SelectedProduct { get; set; }
         public ProductViewDto SelectedProduct
@@ -33,10 +44,13 @@ namespace WarehouseSimulation.ViewModels
         public RelayCommand NavigateToRacksViewCommand { get; set; }
         public RelayCommand NavigateToProductsViewCommand { get; set; }
         public RelayCommand NavigateToLocationsViewCommand { get; set; }
+        public RelayCommand NextDayViewCommand { get; set; }
 
-        public WarehouseViewModel(INavigationServices navService)
+        public WarehouseViewModel(INavigationServices navService, IDateService dateService)
         {
             Navigation = navService;
+            DateService = dateService;
+
             NavigateToDeliveriesViewCommand = new RelayCommand(o =>
             {
                 Navigation.NavigateTo<DeliveriesViewModel>();
@@ -52,6 +66,10 @@ namespace WarehouseSimulation.ViewModels
             NavigateToProductsViewCommand = new RelayCommand(o =>
             {
                 Navigation.NavigateTo<ProductsViewModel>();
+            }, canExecute: o => true);
+            NextDayViewCommand = new RelayCommand(o =>
+            {
+                DateService.NextDay();
             }, canExecute: o => true);
             NavigateToLocationsViewCommand = new RelayCommand(o =>
             {

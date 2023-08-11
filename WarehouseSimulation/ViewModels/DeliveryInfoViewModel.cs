@@ -21,6 +21,17 @@ namespace WarehouseSimulation.ViewModels
             }
         }
 
+        private IDateService _DateService;
+        public IDateService DateService
+        {
+            get => _DateService;
+            set
+            {
+                _DateService = value;
+                OnPropertyChanged();
+            }
+        }
+
         private List<ProductViewDto> _AllProducts { get; set; }
         public List<ProductViewDto> AllProducts
         {
@@ -33,10 +44,11 @@ namespace WarehouseSimulation.ViewModels
         public RelayCommand NavigateToPreviousViewCommand { get; set; }
         public Guid? DeliveryId { get; set; }
 
-        public DeliveryInfoViewModel(INavigationServices navService)
+        public DeliveryInfoViewModel(INavigationServices navService, IDateService dateService)
         {
             DeliveryId = GlobalVariables.SelectedDeliveryId;
             Navigation = navService;
+            DateService = dateService;
 
             NavigateToPreviousViewCommand = new RelayCommand(o =>
             {
@@ -44,7 +56,9 @@ namespace WarehouseSimulation.ViewModels
             }, canExecute: o => true);
             ApproveDeliveryCommand = new RelayCommand(o =>
             {
-                var result = DeliveryDataWorker.ApproveDelivery(DeliveryId ?? Guid.Empty, DateTime.UtcNow);
+                var result = DeliveryDataWorker.ApproveDelivery(DeliveryId ?? Guid.Empty, DateService.CurrentDate);
+                DateService.NextDay();
+
                 if (result.IsSuccessfully)
                 {
                     NavigateToPreviousViewCommand.Execute(true);

@@ -3,6 +3,7 @@ using Microsoft.Identity.Client;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Threading;
 using WarehouseSimulation.Models.CoreModels;
 using WarehouseSimulation.Models.DatabaseModels;
 using WarehouseSimulation.Models.ViewModels;
@@ -207,6 +208,14 @@ namespace WarehouseSimulation.Data
                 }
 
                 return result;
+            }
+        }
+
+        public static IEnumerable<Dispatch> GetAllDispatches()
+        {
+            using (DatabaseContext context = new DatabaseContext())
+            {
+                return context.Dispatches.ToList();
             }
         }
     }
