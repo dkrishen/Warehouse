@@ -28,7 +28,17 @@ namespace WarehouseSimulation.ViewModels
         }
 
         public RelayCommand NavigateToPreviousViewCommand { get; set; }
-        public string? ProductSku { get; set; }
+        
+        private string? _ProductSku { get; set; }
+        public string? ProductSku
+        {
+            get => _ProductSku;
+            set
+            {
+                _ProductSku = value;
+                OnPropertyChanged("ProductSku");
+            }
+        }
 
         public ProductLocaionInfoViewModel(INavigationServices navService)
         {
@@ -77,6 +87,5 @@ namespace WarehouseSimulation.ViewModels
             UpdateLocations();
             GlobalVariables.SelectedProductSku = null;
         }
-
     }
 }

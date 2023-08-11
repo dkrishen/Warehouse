@@ -2,7 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Style BasedOn="{StaticResource {x:Type Label}}" 
            TargetType="{x:Type Label}"
-           x:Key="DateLabelTheme">
+           x:Key="CapitalLabelTheme">
         <Style.Setters>
             <Setter Property="HorizontalAlignment" Value="Left"/>
             <Setter Property="Margin" Value="10 5 0 0"/>

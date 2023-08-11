@@ -69,5 +69,9 @@ namespace WarehouseSimulation.ViewModels
             AllDispatches = DispatchDataWorker.GetShortDispatches().ToList();
         }
 
+        public void ViewDetails()
+        {
+            NavigateToDispatchInfoViewCommand.Execute(this);
+        }
     }
 }

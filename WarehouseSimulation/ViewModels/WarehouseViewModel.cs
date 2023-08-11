@@ -44,7 +44,9 @@ namespace WarehouseSimulation.ViewModels
         public RelayCommand NavigateToRacksViewCommand { get; set; }
         public RelayCommand NavigateToProductsViewCommand { get; set; }
         public RelayCommand NavigateToLocationsViewCommand { get; set; }
-        public RelayCommand NextDayViewCommand { get; set; }
+        public RelayCommand NextDayCommand { get; set; }
+        public RelayCommand TransferReportCommand { get; set; }
+        public RelayCommand ExpensesReportCommand { get; set; }
 
         public WarehouseViewModel(INavigationServices navService, IDateService dateService)
         {
@@ -67,9 +69,17 @@ namespace WarehouseSimulation.ViewModels
             {
                 Navigation.NavigateTo<ProductsViewModel>();
             }, canExecute: o => true);
-            NextDayViewCommand = new RelayCommand(o =>
+            NextDayCommand = new RelayCommand(o =>
             {
                 DateService.NextDay();
+            }, canExecute: o => true);
+            TransferReportCommand = new RelayCommand(o =>
+            {
+                throw new NotImplementedException();
+            }, canExecute: o => true);
+            ExpensesReportCommand = new RelayCommand(o =>
+            {
+
             }, canExecute: o => true);
             NavigateToLocationsViewCommand = new RelayCommand(o =>
             {
@@ -89,9 +99,14 @@ namespace WarehouseSimulation.ViewModels
             set { _AllProducts = value; OnPropertyChanged("AllProducts"); }
         }
 
-        internal void UpdateData()
+        public void UpdateData()
         {
             AllProducts = ProductDataWorker.GetProductsCountInfo().ToList();
+        }
+
+        public void ViewLocations()
+        {
+            NavigateToLocationsViewCommand.Execute(this);
         }
     }
 }

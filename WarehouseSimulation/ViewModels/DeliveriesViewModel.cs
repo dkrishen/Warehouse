@@ -70,5 +70,10 @@ namespace WarehouseSimulation.ViewModels
             SelectedDelivery = null;
             AllDeliveries = DeliveryDataWorker.GetShortDeliveries().ToList();
         }
+
+        public void ViewDetails()
+        {
+            NavigateToDeliveryInfoViewCommand.Execute(this);
+        }
     }
 }

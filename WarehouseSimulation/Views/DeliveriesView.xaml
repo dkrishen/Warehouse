@@ -23,11 +23,6 @@
                 Content="Add Delivery" 
                 Command="{Binding NavigateToAddDeliveryViewCommand}"
                 Style="{StaticResource ButtonTheme}"/>
-        <Button Grid.Column="1" Grid.Row="0" 
-                x:Name="DeliveryInfoButton" 
-                Content="Delivery Info" 
-                Command="{Binding NavigateToDeliveryInfoViewCommand}"
-                Style="{StaticResource ButtonTheme}"/>
         <Button Grid.Column="2" Grid.Row="0" 
                 x:Name="BackButton" 
                 Content="Back" 
@@ -41,6 +36,7 @@
                   SelectionMode="Single"
                   IsReadOnly="True"
                   SelectedItem="{Binding SelectedDelivery}"
+                  MouseDoubleClick="DeliveryDataGrid_MouseDoubleClick"
                   ItemsSource="{Binding AllDeliveries, UpdateSourceTrigger=PropertyChanged}"
                   x:Name="DeliveryDataGrid">
             <DataGrid.Columns>

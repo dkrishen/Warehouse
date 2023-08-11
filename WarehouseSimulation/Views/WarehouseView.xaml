@@ -17,7 +17,6 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
         <Button Grid.Column="0" Grid.Row="0" 
@@ -40,19 +39,15 @@
                 Content="Racks" 
                 Command="{Binding NavigateToRacksViewCommand}"
                 Style="{StaticResource ButtonTheme}"/>
-        <Button Grid.Column="4" Grid.Row="0" 
-                x:Name="LocationsButton" 
-                Content="Product Locations" 
-                Command="{Binding NavigateToLocationsViewCommand}"
-                Style="{StaticResource ButtonTheme}"/>
 
-        <DataGrid Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="1" 
+        <DataGrid Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="1" 
                   AutoGenerateColumns="False"
                   Style="{StaticResource DataGridTheme}"
                   SelectionMode="Single"
                   IsReadOnly="True"
                   SelectedItem="{Binding SelectedProduct}"
                   ItemsSource="{Binding AllProducts, UpdateSourceTrigger=PropertyChanged}"
+                  MouseDoubleClick="ProductDataGrid_MouseDoubleClick"
                   x:Name="ProductDataGrid"
                   Loaded="OnLoaded">
             <DataGrid.Columns>
@@ -65,13 +60,25 @@
         </DataGrid>
 
         <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="5"
+                    HorizontalAlignment="Left"
                     Orientation="Horizontal">
-                <Label Content="{Binding Path=DateService.CurrentDate}"
-                       Style="{StaticResource DateLabelTheme}"/>
-                <Button x:Name="NextDayButton" 
+            <Label Content="{Binding Path=DateService.CurrentDate}"
+                       Style="{StaticResource CapitalLabelTheme}"/>
+            <Button x:Name="NextDayButton" 
                         Content="Next Day" 
-                        Command="{Binding NextDayViewCommand}"
+                        Command="{Binding NextDayCommand}"
                         Style="{StaticResource ButtonTheme}"/>
         </StackPanel>
+
+        <Button x:Name="TransferReportButton" 
+                Content="Transfer Report" 
+                Grid.Row="2" Grid.Column="2"
+                Command="{Binding TransferReportCommand}"
+                Style="{StaticResource ButtonTheme}"/>
+        <Button x:Name="ExpensesReportButton" 
+                Content="Expenses Report" 
+                Grid.Row="2" Grid.Column="3"
+                Command="{Binding ExpensesReportCommand}"
+                Style="{StaticResource ButtonTheme}"/>
     </Grid>
 </UserControl>

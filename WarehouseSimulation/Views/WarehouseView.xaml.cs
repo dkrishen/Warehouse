@@ -21,5 +21,13 @@ namespace WarehouseSimulation.Views
                 warehouseViewModel.UpdateData();
             }
         }
+
+        private void ProductDataGrid_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (DataContext is WarehouseViewModel warehouseViewModel)
+            {
+                warehouseViewModel.ViewLocations();
+            }
+        }
     }
 }

@@ -30,6 +30,9 @@
             </DataGrid.Columns>
         </DataGrid>
 
+        <Label Content="{Binding Path=ProductSku, UpdateSourceTrigger=PropertyChanged}"
+                       Style="{StaticResource CapitalLabelTheme}"/>
+
         <Button x:Name="BackButton" 
                 Grid.Column="1" Grid.Row="0" 
                 Content="Back"

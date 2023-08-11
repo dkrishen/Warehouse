@@ -21,5 +21,13 @@ namespace WarehouseSimulation.Views
                 DispatchesViewModel.UpdateData();
             }
         }
+
+        private void DispatcheDataGrid_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (DataContext is DispatchesViewModel DispatchesViewModel)
+            {
+                DispatchesViewModel.ViewDetails();
+            }
+        }
     }
 }

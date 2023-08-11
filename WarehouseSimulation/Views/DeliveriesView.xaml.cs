@@ -21,5 +21,13 @@ namespace WarehouseSimulation.Views
                 DeliveriesViewModel.UpdateData();
             }
         }
+
+        private void DeliveryDataGrid_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (DataContext is DeliveriesViewModel DeliveriesViewModel)
+            {
+                DeliveriesViewModel.ViewDetails();
+            }
+        }
     }
 }
