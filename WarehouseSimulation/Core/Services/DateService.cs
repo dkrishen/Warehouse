@@ -44,5 +44,32 @@ namespace WarehouseSimulation.Core.Services
         {
             CurrentDate = CurrentDate.AddDays(1);
         }
+
+        public string GetMonthName(int number)
+        {
+            return Months.Single(m => m.Value == number).Key;
+        }
+
+        public int GetMonthNumber(string name)
+        {
+            return Months[name];
+        }
+
+        public Dictionary<string, int> Months => new Dictionary<string, int>
+        {
+            { "January", 1 },
+            { "February", 2 },
+            { "March", 3 },
+            { "April", 4 },
+            { "May", 5 },
+            { "June", 6 },
+            { "July", 7 },
+            { "August", 8 },
+            { "September", 9 },
+            { "October", 10 },
+            { "November", 11 },
+            { "December", 12 }
+        };
+
     }
 }

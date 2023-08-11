@@ -75,11 +75,11 @@ namespace WarehouseSimulation.ViewModels
             }, canExecute: o => true);
             TransferReportCommand = new RelayCommand(o =>
             {
-                throw new NotImplementedException();
+                Navigation.NavigateTo<TransferReportViewModel>();
             }, canExecute: o => true);
             ExpensesReportCommand = new RelayCommand(o =>
             {
-
+                throw new NotImplementedException();
             }, canExecute: o => true);
             NavigateToLocationsViewCommand = new RelayCommand(o =>
             {
