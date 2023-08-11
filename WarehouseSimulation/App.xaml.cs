@@ -36,6 +36,7 @@ namespace WarehouseSimulation
             services.AddSingleton<ProductsViewModel>();
             services.AddSingleton<ProductLocaionInfoViewModel>();
             services.AddSingleton<TransferReportViewModel>();
+            services.AddSingleton<ExpensesReportViewModel>();
             services.AddSingleton<INavigationServices, NavigationServices>();
             services.AddSingleton<IDateService, DateService>();
 

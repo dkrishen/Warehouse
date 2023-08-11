@@ -1,6 +1,6 @@
 ﻿namespace WarehouseSimulation.Models.ViewModels
 {
-    public class TransferReportViewDto
+    public class TransferReportDto
     {
         public string ProductSku { get; set; }
         public int CountDelivered { get; set; }

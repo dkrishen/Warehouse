@@ -6,11 +6,11 @@ using System.Linq;
 using WarehouseSimulation.Core;
 using WarehouseSimulation.Core.Services;
 using WarehouseSimulation.Data;
-using Microsoft.IdentityModel.Tokens;
+using WarehouseSimulation.Models.ViewModels;
 
 namespace WarehouseSimulation.ViewModels
 {
-    public class TransferReportViewModel : ViewModelBase
+    public class ExpensesReportViewModel : ViewModelBase
     {
         private INavigationServices _Navigation;
         public INavigationServices Navigation
@@ -46,7 +46,7 @@ namespace WarehouseSimulation.ViewModels
 
         private string[] _Labels { get; set; }
         public string[] Labels
-        { 
+        {
             get => _Labels;
             set
             {
@@ -61,26 +61,23 @@ namespace WarehouseSimulation.ViewModels
             get => _Formatter;
             set
             {
-                _Formatter = value; 
+                _Formatter = value;
                 OnPropertyChanged();
             }
         }
 
-        public string SelectedMonth { get; set; }
         public int SelectedYear { get; set; }
         public List<int> Years { get; set; }
-        public string[] Monthes { get; set; }
-        
+
         public RelayCommand NavigateToPreviousViewCommand { get; set; }
 
 
-        public TransferReportViewModel(INavigationServices navService, IDateService dateService)
+        public ExpensesReportViewModel(INavigationServices navService, IDateService dateService)
         {
             Navigation = navService;
             DateService = dateService;
 
             Years = ReportDataWorker.GetYearsWithActions().ToList();
-            Monthes = DateService.Months.Keys.ToArray();
 
             NavigateToPreviousViewCommand = new RelayCommand(o =>
             {
@@ -90,41 +87,37 @@ namespace WarehouseSimulation.ViewModels
 
         public void UpdateChart()
         {
-            if(SelectedMonth.IsNullOrEmpty())
-            {
-                SelectedMonth = DateService.GetMonthName(DateService.CurrentDate.Month);
-            }
-            if(SelectedYear == 0)
+            if (SelectedYear == 0)
             {
                 SelectedYear = DateService.CurrentDate.Year;
             }
 
-            var startDate = new DateTime(SelectedYear, DateService.GetMonthNumber(SelectedMonth), 1);
-            var endDate = startDate.AddMonths(1).AddDays(-1);
+            var result = ReportDataWorker.GetExpensesDetailsByYear(SelectedYear).ToList();
 
-            var data = ReportDataWorker.GetTransferDetailsByMonth(startDate, endDate).ToList();
+            var data = new List<ExpensesReportDto>();
 
-            ChartValues<int> deliveredValues = new ChartValues<int>();
-            deliveredValues.AddRange(data.Select(d => d.CountDelivered).ToList());
+            foreach(var month in DateService.Months)
+            {
+                data.Add(new ExpensesReportDto
+                {
+                    Month = month.Key,
+                    Expenses = result.FirstOrDefault(d => d.Month == month.Value.ToString())?.Expenses ?? 0
+                });
+            }
 
-            ChartValues<int> dispatchedValues = new ChartValues<int>();
-            dispatchedValues.AddRange(data.Select(d => d.CountDispatched).ToList());
+            ChartValues<double> values = new ChartValues<double>();
+            values.AddRange(data.Select(d => d.Expenses).ToList());
 
             SeriesCollection = new SeriesCollection
             {
                 new ColumnSeries
                 {
-                    Title = "Delivered",
-                    Values = deliveredValues
-                },
-                new ColumnSeries
-                {
-                    Title = "Dispatched",
-                    Values = dispatchedValues
+                    Title = "Expenses",
+                    Values = values
                 }
             };
 
-            Labels = data.Select(d => d.ProductSku).ToArray();
+            Labels = data.Select(d => d.Month).ToArray();
             Formatter = value => value.ToString("N");
         }
 

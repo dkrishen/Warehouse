@@ -12,7 +12,7 @@ namespace WarehouseSimulation.Data
 {
     public static class ReportDataWorker
     {
-        public static IEnumerable<TransferReportViewDto> GetTransferDetailsByMonth(DateTime startDate, DateTime endDate)
+        public static IEnumerable<TransferReportDto> GetTransferDetailsByMonth(DateTime startDate, DateTime endDate)
         {
             using (DatabaseContext context = new DatabaseContext())
             {
@@ -29,7 +29,7 @@ namespace WarehouseSimulation.Data
                             && (DateTime)dp.Dispatch.ApprovalDate >= startDate
                             && (DateTime)dp.Dispatch.ApprovalDate <= endDate).Count() != 0);
 
-                return products.Select(p => new TransferReportViewDto
+                return products.Select(p => new TransferReportDto
                 {
                     ProductSku = p.Sku,
                     CountDelivered = p.DeliveriesProducts.Where(dp => dp.Delivery.ApprovalDate != null
@@ -42,6 +42,27 @@ namespace WarehouseSimulation.Data
             }
         }
 
+        public static IEnumerable<ExpensesReportDto> GetExpensesDetailsByYear(int year)
+        {
+            using (DatabaseContext context = new DatabaseContext())
+            {
+                var deliveries = context.Deliveries
+                    .Include(d => d.DeliveriesProducts)
+                    .ThenInclude(dp => dp.Product)
+                    .Where(d => d.ApprovalDate != null
+                        && ((DateTime)d.ApprovalDate).Year == year)
+                    .OrderBy(d => ((DateTime)d.ApprovalDate).Month)
+                    .ToList();
+
+                return deliveries.GroupBy(d => ((DateTime)d.ApprovalDate).Month)
+                    .Select(g => new ExpensesReportDto
+                    {
+                        Month = g.Key.ToString(),
+                        Expenses = g.ToList().Sum(dp => dp.DeliveriesProducts.Sum(p => p.ProductCount * p.Product.Cost))
+                    })
+                    .ToList();
+            }
+        }
 
         public static IEnumerable<int> GetYearsWithActions()
         {
