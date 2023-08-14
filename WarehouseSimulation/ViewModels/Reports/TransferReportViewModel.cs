@@ -8,7 +8,7 @@ using WarehouseSimulation.Core.Services;
 using WarehouseSimulation.Data;
 using Microsoft.IdentityModel.Tokens;
 
-namespace WarehouseSimulation.ViewModels
+namespace WarehouseSimulation.ViewModels.Reports
 {
     public class TransferReportViewModel : ViewModelBase
     {
@@ -46,7 +46,7 @@ namespace WarehouseSimulation.ViewModels
 
         private string[] _Labels { get; set; }
         public string[] Labels
-        { 
+        {
             get => _Labels;
             set
             {
@@ -61,7 +61,7 @@ namespace WarehouseSimulation.ViewModels
             get => _Formatter;
             set
             {
-                _Formatter = value; 
+                _Formatter = value;
                 OnPropertyChanged();
             }
         }
@@ -70,7 +70,7 @@ namespace WarehouseSimulation.ViewModels
         public int SelectedYear { get; set; }
         public List<int> Years { get; set; }
         public string[] Monthes { get; set; }
-        
+
         public RelayCommand NavigateToPreviousViewCommand { get; set; }
 
 
@@ -90,11 +90,11 @@ namespace WarehouseSimulation.ViewModels
 
         public void UpdateChart()
         {
-            if(SelectedMonth.IsNullOrEmpty())
+            if (SelectedMonth.IsNullOrEmpty())
             {
                 SelectedMonth = DateService.GetMonthName(DateService.CurrentDate.Month);
             }
-            if(SelectedYear == 0)
+            if (SelectedYear == 0)
             {
                 SelectedYear = DateService.CurrentDate.Year;
             }

@@ -7,7 +7,7 @@ using WarehouseSimulation.Core.Services;
 using WarehouseSimulation.Data;
 using WarehouseSimulation.Models.ViewModels;
 
-namespace WarehouseSimulation.ViewModels
+namespace WarehouseSimulation.ViewModels.Delivery
 {
     public class DeliveriesViewModel : ViewModelBase
     {
@@ -57,7 +57,7 @@ namespace WarehouseSimulation.ViewModels
             }, canExecute: o => true);
             NavigateToDeliveryInfoViewCommand = new RelayCommand(o =>
             {
-                if(SelectedDelivery != null)
+                if (SelectedDelivery != null)
                 {
                     GlobalVariables.SelectedDeliveryId = SelectedDelivery.DeliveryId;
                     Navigation.NavigateTo<DeliveryInfoViewModel>();

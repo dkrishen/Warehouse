@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using WarehouseSimulation.ViewModels;
+using WarehouseSimulation.ViewModels.Delivery;
 
 namespace WarehouseSimulation.Views
 {

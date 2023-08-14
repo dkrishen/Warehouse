@@ -12,41 +12,33 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using WarehouseSimulation.ViewModels;
+using WarehouseSimulation.ViewModels.Reports;
 
 namespace WarehouseSimulation.Views
 {
     /// <summary>
-    /// Interaction logic for TransferReportView.xaml
+    /// Interaction logic for ExpensesReport.xaml
     /// </summary>
-    public partial class TransferReportView : UserControl
+    public partial class ExpensesReportView : UserControl
     {
-        public TransferReportView()
+        public ExpensesReportView()
         {
             InitializeComponent();
         }
 
-        private void MonthComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (DataContext is TransferReportViewModel transferReportViewModel)
-            {
-                transferReportViewModel.UpdateData();
-            }
-        }
-
         private void YearComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (DataContext is TransferReportViewModel transferReportViewModel)
+            if (DataContext is ExpensesReportViewModel expensesReportViewModel)
             {
-                transferReportViewModel.UpdateData();
+                expensesReportViewModel.UpdateData();
             }
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            if (DataContext is TransferReportViewModel transferReportViewModel)
+            if (DataContext is ExpensesReportViewModel expensesReportViewModel)
             {
-                transferReportViewModel.UpdateData();
+                expensesReportViewModel.UpdateData();
             }
         }
     }

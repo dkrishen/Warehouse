@@ -8,7 +8,7 @@ using WarehouseSimulation.Core.Services;
 using WarehouseSimulation.Data;
 using WarehouseSimulation.Models.ViewModels;
 
-namespace WarehouseSimulation.ViewModels
+namespace WarehouseSimulation.ViewModels.Reports
 {
     public class ExpensesReportViewModel : ViewModelBase
     {
@@ -96,7 +96,7 @@ namespace WarehouseSimulation.ViewModels
 
             var data = new List<ExpensesReportDto>();
 
-            foreach(var month in DateService.Months)
+            foreach (var month in DateService.Months)
             {
                 data.Add(new ExpensesReportDto
                 {

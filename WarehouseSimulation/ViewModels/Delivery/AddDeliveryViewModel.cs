@@ -6,7 +6,7 @@ using WarehouseSimulation.Core;
 using WarehouseSimulation.Data;
 using WarehouseSimulation.Models.ViewModels;
 
-namespace WarehouseSimulation.ViewModels
+namespace WarehouseSimulation.ViewModels.Delivery
 {
     public class AddDeliveryViewModel : ViewModelBase
     {
@@ -126,13 +126,13 @@ namespace WarehouseSimulation.ViewModels
                         UpdateData();
                         InvokeListUpdate();
                     }
-                } 
+                }
                 catch { }
 
             }, canExecute: o => true);
             AddDeliveryCommand = new RelayCommand(o =>
             {
-                if(AllProductsInDelivery.Count != 0
+                if (AllProductsInDelivery.Count != 0
                     && DeliveryDataWorker.CreateDelivery(AllProductsInDelivery, DateService.CurrentDate))
                 {
                     DateService.NextDay();
@@ -153,7 +153,7 @@ namespace WarehouseSimulation.ViewModels
                 .Except(AllProducts
                     .Select(p => p.SKU))
                 .ToList()
-                .ForEach(rp 
+                .ForEach(rp
                     => AllProductsInDelivery
                         .Remove(AllProductsInDelivery
                             .Single(p => p.SKU == rp)));

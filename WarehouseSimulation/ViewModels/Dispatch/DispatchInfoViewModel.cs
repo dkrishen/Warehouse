@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using WarehouseSimulation.Core.Services;
 using WarehouseSimulation.Core;
 using WarehouseSimulation.Data;
 using WarehouseSimulation.Models.ViewModels;
+using WarehouseSimulation.Models.DatabaseModels;
+using System.Linq;
+using System.Windows;
 
-namespace WarehouseSimulation.ViewModels
+namespace WarehouseSimulation.ViewModels.Dispatch
 {
-    public class DeliveryInfoViewModel : ViewModelBase
+    public class DispatchInfoViewModel : ViewModelBase
     {
         private INavigationServices _Navigation;
         public INavigationServices Navigation
@@ -39,53 +41,54 @@ namespace WarehouseSimulation.ViewModels
             set { _AllProducts = value; OnPropertyChanged("AllProducts"); }
         }
 
-        public RelayCommand RemoveDeliveryCommand { get; set; }
-        public RelayCommand ApproveDeliveryCommand { get; set; }
+        public RelayCommand RemoveDispatchCommand { get; set; }
+        public RelayCommand ApproveDispatchCommand { get; set; }
         public RelayCommand NavigateToPreviousViewCommand { get; set; }
-        public Guid? DeliveryId { get; set; }
+        public Guid? DispatchId { get; set; }
 
-        public DeliveryInfoViewModel(INavigationServices navService, IDateService dateService)
+        public DispatchInfoViewModel(INavigationServices navService, IDateService dateService)
         {
-            DeliveryId = GlobalVariables.SelectedDeliveryId;
+            DispatchId = GlobalVariables.SelectedDispatchId;
             Navigation = navService;
             DateService = dateService;
-
             NavigateToPreviousViewCommand = new RelayCommand(o =>
             {
                 Navigation.ToBack();
             }, canExecute: o => true);
-            ApproveDeliveryCommand = new RelayCommand(o =>
+            ApproveDispatchCommand = new RelayCommand(o =>
             {
-                var result = DeliveryDataWorker.ApproveDelivery(DeliveryId ?? Guid.Empty, DateService.CurrentDate);
+                var result = DispatchDataWorker.ApproveDispatch(DispatchId ?? Guid.Empty, DateService.CurrentDate);
                 DateService.NextDay();
 
                 if (result.IsSuccessfully)
                 {
-                    NavigateToPreviousViewCommand.Execute(true);
+                    result = RackDataWorker.CheckSump(result);
                     result.Show();
+
+                    NavigateToPreviousViewCommand.Execute(true);
                 }
             }, canExecute: o => true);
-            RemoveDeliveryCommand = new RelayCommand(o =>
+            RemoveDispatchCommand = new RelayCommand(o =>
             {
-                DeliveryDataWorker.RemoveDelivery(DeliveryId ?? Guid.Empty);
+                DispatchDataWorker.RemoveDispatch(DispatchId ?? Guid.Empty);
                 NavigateToPreviousViewCommand.Execute(true);
             }, canExecute: o => true);
 
-            if (DeliveryId == null)
+            if (DispatchId == null)
             {
                 NavigateToPreviousViewCommand.Execute(true);
             }
             else
             {
-                AllProducts = DeliveryDataWorker.GetProductsByDeliveryId(DeliveryId ?? Guid.Empty).ToList();
+                AllProducts = DispatchDataWorker.GetProductsByDispatchId(DispatchId ?? Guid.Empty).ToList();
             }
         }
 
         public void UpdateData()
         {
-            DeliveryId = GlobalVariables.SelectedDeliveryId;
-            AllProducts = DeliveryDataWorker.GetProductsByDeliveryId(DeliveryId ?? Guid.Empty).ToList();
-            GlobalVariables.SelectedDeliveryId = null;
+            DispatchId = GlobalVariables.SelectedDispatchId;
+            AllProducts = DispatchDataWorker.GetProductsByDispatchId(DispatchId ?? Guid.Empty).ToList();
+            GlobalVariables.SelectedDispatchId = null;
         }
     }
 }

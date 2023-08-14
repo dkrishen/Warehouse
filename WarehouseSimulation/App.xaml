@@ -10,27 +10,27 @@
                 <view:WarehouseView/>
             </DataTemplate>
 
-            <DataTemplate DataType="{x:Type TypeName=viewModel:DeliveriesViewModel}">
+            <DataTemplate DataType="{x:Type TypeName=viewModel:Delivery.DeliveriesViewModel}">
                 <view:DeliveriesView/>
             </DataTemplate>
 
-            <DataTemplate DataType="{x:Type TypeName=viewModel:DispatchesViewModel}">
-                <view:DispatchesView/>
-            </DataTemplate>
-
-            <DataTemplate DataType="{x:Type TypeName=viewModel:DeliveryInfoViewModel}">
+            <DataTemplate DataType="{x:Type TypeName=viewModel:Delivery.DeliveryInfoViewModel}">
                 <view:DeliveryInfoView/>
             </DataTemplate>
 
-            <DataTemplate DataType="{x:Type TypeName=viewModel:DispatchInfoViewModel}">
-                <view:DispatchInfoView/>
-            </DataTemplate>
-
-            <DataTemplate DataType="{x:Type TypeName=viewModel:AddDeliveryViewModel}">
+            <DataTemplate DataType="{x:Type TypeName=viewModel:Delivery.AddDeliveryViewModel}">
                 <view:AddDeliveryView/>
             </DataTemplate>
 
-            <DataTemplate DataType="{x:Type TypeName=viewModel:AddDispatchViewModel}">
+            <DataTemplate DataType="{x:Type TypeName=viewModel:Dispatch.DispatchesViewModel}">
+                <view:DispatchesView/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type TypeName=viewModel:Dispatch.DispatchInfoViewModel}">
+                <view:DispatchInfoView/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type TypeName=viewModel:Dispatch.AddDispatchViewModel}">
                 <view:AddDispatchView/>
             </DataTemplate>
 
@@ -50,11 +50,11 @@
                 <view:ProductLocationInfoView/>
             </DataTemplate>
 
-            <DataTemplate DataType="{x:Type TypeName=viewModel:TransferReportViewModel}">
+            <DataTemplate DataType="{x:Type TypeName=viewModel:Reports.TransferReportViewModel}">
                 <view:TransferReportView/>
             </DataTemplate>
 
-            <DataTemplate DataType="{x:Type TypeName=viewModel:ExpensesReportViewModel}">
+            <DataTemplate DataType="{x:Type TypeName=viewModel:Reports.ExpensesReportViewModel}">
                 <view:ExpensesReportView/>
             </DataTemplate>
             

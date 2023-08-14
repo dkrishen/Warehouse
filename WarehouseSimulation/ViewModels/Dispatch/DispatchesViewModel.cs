@@ -5,7 +5,7 @@ using WarehouseSimulation.Data;
 using WarehouseSimulation.Models.ViewModels;
 using System.Linq;
 
-namespace WarehouseSimulation.ViewModels
+namespace WarehouseSimulation.ViewModels.Dispatch
 {
     public class DispatchesViewModel : ViewModelBase
     {

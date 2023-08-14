@@ -4,6 +4,9 @@ using System.Windows;
 using WarehouseSimulation.Core;
 using WarehouseSimulation.Core.Services;
 using WarehouseSimulation.ViewModels;
+using WarehouseSimulation.ViewModels.Delivery;
+using WarehouseSimulation.ViewModels.Dispatch;
+using WarehouseSimulation.ViewModels.Reports;
 using WarehouseSimulation.Views;
 
 namespace WarehouseSimulation
