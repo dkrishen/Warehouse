@@ -189,18 +189,18 @@ namespace WarehouseSimulation.Data
                                 result.IsRequiredNotification = true;
                             }
                         });
+
+                        var dispatch = context.Dispatches.Single(d => d.Id == dispatchId);
+                        dispatch.ApprovalDate = approvalDate;
+                        dispatch.IsActive = false;
+                        context.SaveChanges();
+                        result.IsSuccessfully = true;
                     }
                     else
                     {
                         result.IsSuccessfully = false;
                     }
 
-                    var dispatch = context.Dispatches.Single(d => d.Id == dispatchId);
-                    dispatch.ApprovalDate = approvalDate;
-                    dispatch.IsActive = false;
-                    context.SaveChanges();
-
-                    result.IsSuccessfully = true;
                 }
                 catch (Exception ex)
                 {
