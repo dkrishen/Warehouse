@@ -3,6 +3,7 @@ using System;
 using System.Windows;
 using WarehouseSimulation.Core;
 using WarehouseSimulation.Core.Services;
+using WarehouseSimulation.Data;
 using WarehouseSimulation.ViewModels;
 using WarehouseSimulation.ViewModels.Delivery;
 using WarehouseSimulation.ViewModels.Dispatch;
@@ -44,8 +45,12 @@ namespace WarehouseSimulation
             services.AddSingleton<IDateService, DateService>();
 
             services.AddSingleton<Func<Type, ViewModelBase>>(serviceProvider => viewModelType => (ViewModelBase)serviceProvider.GetRequiredService(viewModelType));
-
+            
             _serviceProvider = services.BuildServiceProvider();
+            using (DatabaseContext context = new DatabaseContext())
+            {
+                DbInitializer.Initialize(context);
+            }
         }
 
         protected override void OnStartup(StartupEventArgs e)
